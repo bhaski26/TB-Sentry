@@ -216,3 +216,48 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ================================
+# TB-Sentry project-specific
+# ================================
+
+# Local datasets — NEVER commit medical images
+data/raw/
+data/processed/
+data/interim/
+
+# Dataset archives
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Model checkpoints / weights
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+
+# Experiment tracking
+wandb/
+mlruns/
+
+# Generated experiment outputs
+results/generated/
+
+# Local logs
+*.log
+
+# Local configuration / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
