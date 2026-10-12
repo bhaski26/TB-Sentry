@@ -1,0 +1,24 @@
+{
+  "validation_loss": 0.1548466412927438,
+  "sensitivity": 0.495,
+  "specificity": 0.9975,
+  "precision": 0.9611650485436893,
+  "f1": 0.6534653465346535,
+  "roc_auc": 0.959853125,
+  "pr_auc": 0.83715968884236,
+  "tn": 1596,
+  "fp": 4,
+  "fn": 101,
+  "tp": 99,
+  "threshold": 0.5,
+  "validation_examples": 1800,
+  "epoch": 1,
+  "training_loss": 0.418023118387174,
+  "seed": 42,
+  "batch_size": 4,
+  "learning_rate": 0.001,
+  "class_weights": [
+    0.1818181872367859,
+    1.8181817531585693
+  ]
+}

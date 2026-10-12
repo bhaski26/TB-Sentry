@@ -261,3 +261,14 @@ results/generated/
 # OS
 .DS_Store
 Thumbs.db
+
+# Python cache files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated result artifacts that should remain local
+results/generated/
+
+# Additional local Python environment
+.venv_test/
