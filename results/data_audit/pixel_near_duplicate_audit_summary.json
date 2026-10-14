@@ -1,0 +1,17 @@
+{
+  "manifest": "data\\interim\\tbx11k_manifest_deduplicated.csv",
+  "input_candidate_csv": "results\\data_audit\\near_duplicate_candidates.csv",
+  "manifest_records": 8280,
+  "input_candidate_pairs": 21071,
+  "pairs_selected_for_pixel_comparison": 21071,
+  "max_phash_distance": 6,
+  "max_mean_absolute_difference": 0.02,
+  "max_changed_pixel_percentage": 1.0,
+  "missing_images": 0,
+  "dimension_mismatches": 0,
+  "comparison_errors": 0,
+  "pixel_near_duplicate_candidates": 6,
+  "cross_split_candidates": 2,
+  "within_split_candidates": 4,
+  "important_limitation": "These are algorithmically selected candidates, not confirmed duplicates. The thresholds were chosen for strict screening and have not been validated as universal duplicate criteria. The audit only examines pairs selected by perceptual hashing; it may miss transformed duplicates with larger hash distances. Patient identity cannot be established from pixel similarity."
+}

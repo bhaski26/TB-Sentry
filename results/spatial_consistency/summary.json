@@ -1,0 +1,40 @@
+{
+  "experiment": "TBX11K validation Grad-CAM spatial consistency",
+  "checkpoint": "models\\checkpoints\\densenet121_baseline.pt",
+  "split": "val",
+  "images_evaluated": 200,
+  "boxes_evaluated": 309,
+  "heatmap_target_class": 1,
+  "relative_heatmap_threshold": 0.5,
+  "localization_categories": {
+    "ObsoletePulmonaryTuberculosis": 61,
+    "ActiveTuberculosis": 248
+  },
+  "box_coverage_union": {
+    "count": 200,
+    "mean": 0.20214669357975193,
+    "median": 0.06935605644858198
+  },
+  "heatmap_precision_union": {
+    "count": 200,
+    "mean": 0.09884668478404635,
+    "median": 0.026228384431831366
+  },
+  "mean_individual_box_coverage": {
+    "count": 200,
+    "mean": 0.19775926258163515,
+    "median": 0.0674415874872401
+  },
+  "median_individual_box_coverage": {
+    "count": 200,
+    "mean": 0.195264179543714,
+    "median": 0.06552212452126552
+  },
+  "limitations": [
+    "Evaluation is restricted to validation images with TB localization boxes.",
+    "Bounding boxes are coarse localization annotations, not pixel-perfect lesion masks.",
+    "The relative heatmap threshold is exploratory and not clinically validated.",
+    "Metrics measure spatial consistency, not explanation faithfulness or clinical correctness.",
+    "The evaluation does not establish patient-level independence or external generalization."
+  ]
+}

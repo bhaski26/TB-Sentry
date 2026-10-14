@@ -1,0 +1,192 @@
+{
+  "images_analyzed": 200,
+  "classification_threshold": 0.5,
+  "confidence_bins": [
+    {
+      "label": "0.00\u20130.20",
+      "lower": 0.0,
+      "upper": 0.2
+    },
+    {
+      "label": "0.20\u20130.40",
+      "lower": 0.2,
+      "upper": 0.4
+    },
+    {
+      "label": "0.40\u20130.60",
+      "lower": 0.4,
+      "upper": 0.6
+    },
+    {
+      "label": "0.60\u20130.80",
+      "lower": 0.6,
+      "upper": 0.8
+    },
+    {
+      "label": "0.80\u20131.00",
+      "lower": 0.8,
+      "upper": 1.0
+    }
+  ],
+  "outcome_summaries": [
+    {
+      "group": "ALL",
+      "images": 200,
+      "box_coverage_union": {
+        "count": 200,
+        "mean": 0.20214669357975193,
+        "median": 0.06935605644858198
+      },
+      "heatmap_precision_union": {
+        "count": 200,
+        "mean": 0.09884668478404635,
+        "median": 0.026228384431831366
+      }
+    },
+    {
+      "group": "TP",
+      "images": 99,
+      "box_coverage_union": {
+        "count": 99,
+        "mean": 0.27922620122810915,
+        "median": 0.22261072261072262
+      },
+      "heatmap_precision_union": {
+        "count": 99,
+        "mean": 0.11313932605541499,
+        "median": 0.06142118159542608
+      }
+    },
+    {
+      "group": "FN",
+      "images": 101,
+      "box_coverage_union": {
+        "count": 101,
+        "mean": 0.1265935128155206,
+        "median": 0.000683433570256971
+      },
+      "heatmap_precision_union": {
+        "count": 101,
+        "mean": 0.08483706611211074,
+        "median": 0.0005698005698005698
+      }
+    },
+    {
+      "group": "TN",
+      "images": 0,
+      "box_coverage_union": {
+        "count": 0,
+        "mean": null,
+        "median": null
+      },
+      "heatmap_precision_union": {
+        "count": 0,
+        "mean": null,
+        "median": null
+      }
+    },
+    {
+      "group": "FP",
+      "images": 0,
+      "box_coverage_union": {
+        "count": 0,
+        "mean": null,
+        "median": null
+      },
+      "heatmap_precision_union": {
+        "count": 0,
+        "mean": null,
+        "median": null
+      }
+    }
+  ],
+  "confidence_summaries": [
+    {
+      "confidence_bin": "0.00\u20130.20",
+      "lower_bound": 0.0,
+      "upper_bound": 0.2,
+      "images": 53,
+      "box_coverage_union": {
+        "count": 53,
+        "mean": 0.07923773873841636,
+        "median": 0.0
+      },
+      "heatmap_precision_union": {
+        "count": 53,
+        "mean": 0.07524339184911875,
+        "median": 0.0
+      }
+    },
+    {
+      "confidence_bin": "0.20\u20130.40",
+      "lower_bound": 0.2,
+      "upper_bound": 0.4,
+      "images": 31,
+      "box_coverage_union": {
+        "count": 31,
+        "mean": 0.19001053262114767,
+        "median": 0.09579387800044044
+      },
+      "heatmap_precision_union": {
+        "count": 31,
+        "mean": 0.11744606864103448,
+        "median": 0.049079206150545326
+      }
+    },
+    {
+      "confidence_bin": "0.40\u20130.60",
+      "lower_bound": 0.4,
+      "upper_bound": 0.6,
+      "images": 42,
+      "box_coverage_union": {
+        "count": 42,
+        "mean": 0.24106482980362964,
+        "median": 0.10438723964670993
+      },
+      "heatmap_precision_union": {
+        "count": 42,
+        "mean": 0.09589100245502397,
+        "median": 0.022963707920270568
+      }
+    },
+    {
+      "confidence_bin": "0.60\u20130.80",
+      "lower_bound": 0.6,
+      "upper_bound": 0.8,
+      "images": 28,
+      "box_coverage_union": {
+        "count": 28,
+        "mean": 0.2484729924380773,
+        "median": 0.25325324890802736
+      },
+      "heatmap_precision_union": {
+        "count": 28,
+        "mean": 0.13694319144191833,
+        "median": 0.06385371143867218
+      }
+    },
+    {
+      "confidence_bin": "0.80\u20131.00",
+      "lower_bound": 0.8,
+      "upper_bound": 1.0,
+      "images": 46,
+      "box_coverage_union": {
+        "count": 46,
+        "mean": 0.28820533503348117,
+        "median": 0.22043234543234544
+      },
+      "heatmap_precision_union": {
+        "count": 46,
+        "mean": 0.09301690429237364,
+        "median": 0.06916997295636845
+      }
+    }
+  ],
+  "limitations": [
+    "Analysis is restricted to TB-labelled validation images with localization boxes.",
+    "Classification outcomes use the existing threshold of 0.5.",
+    "Confidence bins are descriptive and are not evidence of calibration.",
+    "Group differences are exploratory and do not establish causality.",
+    "Bounding-box overlap does not establish clinical correctness or explanation faithfulness."
+  ]
+}

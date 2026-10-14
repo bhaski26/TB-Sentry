@@ -1,0 +1,82 @@
+{
+  "number_of_seeds": 3,
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "metrics": {
+    "training_loss": {
+      "mean": 0.4064471337267335,
+      "sample_standard_deviation": 0.004049967090878746,
+      "minimum": 0.4020119086816263,
+      "maximum": 0.40994880915142273
+    },
+    "validation_loss": {
+      "mean": 0.18460486285595432,
+      "sample_standard_deviation": 0.03365419561208697,
+      "minimum": 0.1489847679539687,
+      "maximum": 0.2158689621753163
+    },
+    "sensitivity": {
+      "mean": 0.7866666666666667,
+      "sample_standard_deviation": 0.05033222956847165,
+      "minimum": 0.74,
+      "maximum": 0.84
+    },
+    "specificity": {
+      "mean": 0.9547916666666666,
+      "sample_standard_deviation": 0.02187797598804183,
+      "minimum": 0.933125,
+      "maximum": 0.976875
+    },
+    "precision": {
+      "mean": 0.6973772661108907,
+      "sample_standard_deviation": 0.09557494598477634,
+      "minimum": 0.610909090909091,
+      "maximum": 0.8
+    },
+    "f1": {
+      "mean": 0.7344907723855091,
+      "sample_standard_deviation": 0.03136068354739163,
+      "minimum": 0.7073684210526315,
+      "maximum": 0.7688311688311689
+    },
+    "roc_auc": {
+      "mean": 0.9614822916666667,
+      "sample_standard_deviation": 0.002349803294072358,
+      "minimum": 0.9593031249999999,
+      "maximum": 0.9639718749999999
+    },
+    "average_precision": {
+      "mean": 0.8506807636327491,
+      "sample_standard_deviation": 0.0056560773065416825,
+      "minimum": 0.8451343213816349,
+      "maximum": 0.8564404449143885
+    }
+  },
+  "configuration": {
+    "manifest": "data\\interim\\tbx11k_manifest_deduplicated.csv",
+    "architecture": "DenseNet-121",
+    "pretrained_weights": "DenseNet121_Weights.DEFAULT",
+    "backbone_frozen": true,
+    "epochs": 1,
+    "batch_size": 4,
+    "learning_rate": 0.001,
+    "threshold": 0.5,
+    "device": "cpu",
+    "python_version": "3.11.3 (tags/v3.11.3:f3909b8, Apr  4 2023, 23:49:59) [MSC v.1934 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "torch_version": "2.14.1+cpu",
+    "torchvision_version": "0.29.1+cpu",
+    "numpy_version": "2.4.6",
+    "created_utc": "2026-10-14T10:35:41.010093+00:00"
+  },
+  "limitations": [
+    "Three seeds provide only a preliminary estimate of training variability.",
+    "The runs do not establish patient-level generalisation.",
+    "The validation set has been examined repeatedly and is not an untouched final test set.",
+    "One training epoch is insufficient to establish a converged model.",
+    "Mean and sample standard deviation across three seeds are descriptive, not definitive statistical evidence."
+  ]
+}

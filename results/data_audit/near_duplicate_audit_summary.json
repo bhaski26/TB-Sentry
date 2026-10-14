@@ -1,0 +1,12 @@
+{
+  "manifest": "data\\interim\\tbx11k_manifest_deduplicated.csv",
+  "successfully_hashed_images": 8280,
+  "missing_files": 0,
+  "hash_method": "Pillow ImageHash pHash",
+  "hash_size": 8,
+  "hamming_distance_threshold": 6,
+  "candidate_pairs_total": 21071,
+  "candidate_pairs_cross_split": 7069,
+  "candidate_pairs_within_split": 14002,
+  "warning": "Perceptual-hash matches are candidates only. They do not prove that images belong to the same patient or represent the same original radiograph. Review candidate images manually."
+}

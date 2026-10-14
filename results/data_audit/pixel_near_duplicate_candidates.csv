@@ -1,0 +1,7 @@
+image_path_1,image_path_2,split_1,split_2,label_1,label_2,hamming_distance,comparison,width,height,total_pixels,changed_pixels,changed_pixel_percentage,mean_absolute_difference,maximum_pixel_difference,exact_pixel_equality,sha256_equal
+data/raw/tbx11k/TBX11K/imgs/sick/s0491.png,data/raw/tbx11k/TBX11K/imgs/sick/s3479.png,val,val,0,0,0,within_split,512,512,262144,788,0.30059814453125,0.0054931640625,5,False,False
+data/raw/tbx11k/TBX11K/imgs/sick/s1174.png,data/raw/tbx11k/TBX11K/imgs/sick/s1964.png,train,val,0,0,0,cross_split,512,512,262144,813,0.3101348876953125,0.007205963134765625,14,False,False
+data/raw/tbx11k/TBX11K/imgs/sick/s2023.png,data/raw/tbx11k/TBX11K/imgs/sick/s3669.png,train,val,0,0,0,cross_split,512,512,262144,1197,0.4566192626953125,0.011852264404296875,13,False,False
+data/raw/tbx11k/TBX11K/imgs/sick/s0842.png,data/raw/tbx11k/TBX11K/imgs/sick/s2752.png,train,train,0,0,0,within_split,512,512,262144,1365,0.5207061767578125,0.01415252685546875,10,False,False
+data/raw/tbx11k/TBX11K/imgs/sick/s0578.png,data/raw/tbx11k/TBX11K/imgs/sick/s0990.png,train,train,0,0,0,within_split,512,512,262144,1430,0.545501708984375,0.01531219482421875,11,False,False
+data/raw/tbx11k/TBX11K/imgs/sick/s0228.png,data/raw/tbx11k/TBX11K/imgs/sick/s0707.png,train,train,0,0,0,within_split,512,512,262144,1712,0.653076171875,0.016178131103515625,6,False,False

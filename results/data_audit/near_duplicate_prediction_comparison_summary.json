@@ -1,0 +1,38 @@
+{
+  "experiment_1": "Exact-duplicate-aware training",
+  "experiment_2": "Near-duplicate-excluded training",
+  "validation_images_compared": 1800,
+  "predictions_changed": 34,
+  "predictions_unchanged": 1766,
+  "mean_absolute_probability_change": 0.03292875963016639,
+  "target_images": [
+    {
+      "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1964.png",
+      "image_name": "s1964.png",
+      "true_label": 0,
+      "exact_duplicate_tb_probability": 0.07054496556520462,
+      "near_duplicate_excluded_tb_probability": 0.04752102866768837,
+      "probability_change": -0.02302393689751625,
+      "exact_duplicate_prediction": 0,
+      "near_duplicate_excluded_prediction": 0,
+      "prediction_changed": false
+    },
+    {
+      "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3669.png",
+      "image_name": "s3669.png",
+      "true_label": 0,
+      "exact_duplicate_tb_probability": 0.026482796296477318,
+      "near_duplicate_excluded_tb_probability": 0.061755914241075516,
+      "probability_change": 0.0352731179445982,
+      "exact_duplicate_prediction": 0,
+      "near_duplicate_excluded_prediction": 0,
+      "prediction_changed": false
+    }
+  ],
+  "limitations": [
+    "Both experiments used one seed and one training epoch.",
+    "Differences cannot be attributed causally to the two exclusions.",
+    "The audit does not establish patient-level independence.",
+    "The two candidate pairs require interpretation as image-level near-duplicates, not proof of patient identity."
+  ]
+}

@@ -1,0 +1,815 @@
+{
+  "manifest_records": 8400,
+  "missing_image_count": 0,
+  "exact_cross_split_duplicate_group_count": 38,
+  "validation_duplicate_record_count": 38,
+  "unique_affected_validation_path_count": 38,
+  "cross_split_label_conflict_group_count": 0,
+  "missing_files": [],
+  "duplicate_groups": [
+    {
+      "sha256": "f2acb737c1e4c15a42c38891f517c42503dcc5fb5171bda8f1c21b7101dce75a",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0055.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0480.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "70c16b82d7f1589b35295a7bd3c9351d0467b79b68cc3ac4b4d6566772a2c5bf",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0099.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4529.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "4ed952d56a23b008a8a5d88cbf9fd76119e00baba38a4881db106bf703a7ebb2",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0199.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2193.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "f30b776244668855e59cc44e0028f55cb4945cd2bff5b11b12bc58e31e1532b8",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0296.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3741.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "539be57f28ad7f1020761dab796810c3f847e84c0bce5766a85bd78832ec1b22",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0311.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2953.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "cb47aeb16328d5179913b61749dc8f5fa0d6900d1611e793467033c0763e92a6",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0448.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2542.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "13a5e1436ed8d5f02648f56cbdbfaa36900d1ab47bce23abd82a1d0cc1d66b27",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0583.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3878.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "3a87950164f85a04484c93f1c8dee8beb247a245b826313bf3c6a355e5cff9d7",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0765.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4621.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "65fa16b6b04907b1edf527c065f877fef0d15ca85f8218fbd8b579a99096ad00",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0981.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2254.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "ca1a0f6eae68f29eb438ee5eb4ce5bd0e16c429a73a323b5aa4ef28b5b5039ad",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1040.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2068.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "e2710d6fc908cc812ae22cdf234bc318423a355c0b71f416a3ff62fb931e3492",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1157.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3012.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "3a5915630408321c0629527bf8c755ab18107f43f9e2b76814140dc94f9a85b3",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1267.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0818.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "8160849577eb378e5394c4e2429f42ee05e76a362b29a0282a3690039744bc88",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1270.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1623.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "0206ac2e936477b9a34e84d5b867949a44768a5683de051fd79637a47f655df8",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1403.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1939.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "909c1e9afc2159a237df9356375f2cf552c1cd3a31345f8c2afc1f6ad32d8595",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1421.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0667.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "4408edc77be79d1b2453697f79dbf41da4772438196cfb591e8912a44fdcec50",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1706.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2857.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "1fd45032c968ff4645f7684812ef5115a3ec1e1071c41d139e83f3141c002b26",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1765.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0135.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "8b29c75d61819a6448c63ba5364789b5f04263cff819e832fd469cae60de0db4",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2166.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1529.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "dec952030d08f47ca91bb23a7af21720270f6593298e0ad82b92d3a7aa779632",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2202.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4121.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "f7f6223e497f8bd8b5b84b0020b84fd1bc41b21b6dc1cc287b05988f052824c3",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2210.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1697.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "4135d40b36ab834470af180a18f6d815e513e073c90d70fa0317dea28a10244e",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2345.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1124.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "cddf77d41e47bff518e66b4895db86b30c48bce1429c7168f2ca79ad772cd3e1",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2558.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1499.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "f10af5982988b49e177749a7fe4b991d96c5f24ef1a4e397df723e0a7be5c82a",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2945.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4702.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "7eaac3278c0861bfff5a4adc18f6116677f62a9e640b0f782eafd7eb1f318086",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3378.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0109.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "bf26f0d4208fbea44569f2f484c50d81dca817073de18659a4e52b5660843d0b",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3430.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3648.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "4d0ea328d497ca766f917b0c52501c9bb5a803f65a089de5e512421b1aeb71fc",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3446.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0537.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "06caea7f0b5ff2f4f477e402d2c69bdb80b96c633058b1d67613b9397ddd20d0",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3517.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1639.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "f378ca184834db50508beec4694e247fe3bbbd9d3f048c7b604fce82be129d2d",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3628.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1193.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "e3a9f6778e47449eac4eeaa80e5a8decab453b14c79e1a5a80e47b64a76c4112",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3677.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2432.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "2feca1110954f0c475b910820ced8b97570176f4288d2836276cd554eb3e8093",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3839.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3902.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "5ad12341e026c569952896d68e7a0818342909150957a59d2ea704b14e4488e5",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3886.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0751.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "797ad4c37cf5a92c572cdcefa3eb64bc8ef9d381505c8d7a32767cd83fb26324",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3921.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3838.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "cbf6e0c49a9434574c219004316128417d2779cd609960fc25350d0d175c15c2",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4279.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s3710.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "1321c0d36b0201d5cd37cbd47ac57570dee89e2ed2abbd7e3d8ba2d4ec2112f0",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4402.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4862.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "2004989fc701764f929c5ccd79beacd500bc6b00aeb0e2acbe126c4c4ec021b5",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4449.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1858.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "de842d2a64c0d583ae63fe0492ac5c564acada28d3ff62b4558d869b66f4c8a1",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4607.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2508.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "fa5714c9ba9e8f0f29f8730bf87b1d12f6646e548dcc24461f5edd73b1fef6b8",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4856.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s0290.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    },
+    {
+      "sha256": "a6a2ba012f4b68c363fb3c5f5a8dab77ce8e3d3bda6ebe5da1ffc09ce88e94b5",
+      "splits": [
+        "train",
+        "val"
+      ],
+      "entries": [
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4932.png",
+          "split": "train",
+          "binary_label": 0,
+          "source_category": "sick"
+        },
+        {
+          "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s4579.png",
+          "split": "val",
+          "binary_label": 0,
+          "source_category": "sick"
+        }
+      ]
+    }
+  ],
+  "label_conflict_groups": [],
+  "limitations": [
+    "Exact file hashes do not detect visually identical files with different encodings.",
+    "This audit does not establish patient identity.",
+    "No patient-level independence claim can be made from these results alone."
+  ]
+}

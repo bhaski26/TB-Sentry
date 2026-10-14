@@ -1,0 +1,27 @@
+{
+  "validation_loss": 0.2158689621753163,
+  "sensitivity": 0.84,
+  "specificity": 0.933125,
+  "precision": 0.610909090909091,
+  "f1": 0.7073684210526315,
+  "roc_auc": 0.9593031249999999,
+  "average_precision": 0.8451343213816349,
+  "tn": 1493,
+  "fp": 107,
+  "fn": 32,
+  "tp": 168,
+  "threshold": 0.5,
+  "validation_examples": 1800,
+  "seed": 123,
+  "epoch": 1,
+  "training_loss": 0.40738068334715166,
+  "batch_size": 4,
+  "learning_rate": 0.001,
+  "image_size": 224,
+  "class_weights": [
+    0.18518517911434174,
+    1.814814805984497
+  ],
+  "train_examples": 6480,
+  "checkpoint": "models\\checkpoints\\densenet121_multiseed_123.pt"
+}

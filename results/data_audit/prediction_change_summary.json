@@ -1,0 +1,47 @@
+{
+  "validation_examples": 1800,
+  "classification_threshold": 0.5,
+  "changed_predictions": 79,
+  "unchanged_predictions": 1721,
+  "transitions": {
+    "true_0_old_0_new_0": 1564,
+    "true_0_old_0_new_1": 32,
+    "true_0_old_1_new_1": 4,
+    "true_1_old_0_new_0": 55,
+    "true_1_old_1_new_1": 98,
+    "true_1_old_0_new_1": 46,
+    "true_1_old_1_new_0": 1
+  },
+  "original_metrics_recomputed": {
+    "examples": 1800,
+    "sensitivity": 0.495,
+    "specificity": 0.9975,
+    "precision": 0.9611650485436893,
+    "f1": 0.6534653465346535,
+    "roc_auc": 0.959853125,
+    "average_precision": 0.83715968884236,
+    "tn": 1596,
+    "fp": 4,
+    "fn": 101,
+    "tp": 99
+  },
+  "duplicate_aware_metrics_recomputed": {
+    "examples": 1800,
+    "sensitivity": 0.72,
+    "specificity": 0.9775,
+    "precision": 0.8,
+    "f1": 0.7578947368421053,
+    "roc_auc": 0.9544375000000002,
+    "average_precision": 0.8433798802093281,
+    "tn": 1564,
+    "fp": 36,
+    "fn": 56,
+    "tp": 144
+  },
+  "notes": [
+    "Both models evaluated on the same image paths.",
+    "Predictions matched by image_path.",
+    "This comparison does not establish clinical utility.",
+    "Validation contains six within-split exact-duplicate groups."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "manifest": "data\\interim\\tbx11k_manifest_near_duplicate_excluded.csv",
+  "total_records": 8278,
+  "split_counts": {
+    "train": 6478,
+    "val": 1800
+  },
+  "missing_file_count": 0,
+  "missing_files": [],
+  "excluded_paths_still_present": [],
+  "checks": {
+    "total_records_8278": true,
+    "training_records_6478": true,
+    "validation_records_1800": true,
+    "no_missing_files": true,
+    "excluded_images_absent": true,
+    "validation_unchanged": true,
+    "training_changed_only_as_intended": true
+  },
+  "all_checks_passed": true
+}

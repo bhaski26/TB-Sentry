@@ -1,0 +1,85 @@
+{
+  "number_of_images": 1800,
+  "changed_predictions": 79,
+  "unchanged_predictions": 1721,
+  "probability_change": {
+    "mean_signed_change": 0.07449704323532158,
+    "median_signed_change": 0.0315837407347271,
+    "mean_absolute_change": 0.07507829696633264,
+    "median_absolute_change": 0.03192679468972988,
+    "images_with_increased_tb_probability": 1757,
+    "images_with_decreased_tb_probability": 43,
+    "images_with_unchanged_tb_probability": 0
+  },
+  "probability_change_by_true_class": {
+    "0": {
+      "images": 1600,
+      "mean_signed_change": 0.058827610610752944,
+      "median_signed_change": 0.026304012759146306,
+      "mean_absolute_change": 0.05909401770225196
+    },
+    "1": {
+      "images": 200,
+      "mean_signed_change": 0.19985250423187062,
+      "median_signed_change": 0.17989377305434112,
+      "mean_absolute_change": 0.20295253107897815
+    }
+  },
+  "probability_change_by_transition": {
+    "true_0_old_0_new_0": {
+      "images": 1564,
+      "mean_signed_change": 0.05264050632960139,
+      "median_signed_change": 0.024756669735294248,
+      "mean_absolute_change": 0.05291304555364128
+    },
+    "true_0_old_0_new_1": {
+      "images": 32,
+      "mean_signed_change": 0.34903263696293696,
+      "median_signed_change": 0.36525366453544006,
+      "mean_absolute_change": 0.34903263696293696
+    },
+    "true_0_old_1_new_1": {
+      "images": 4,
+      "mean_signed_change": 0.15634517372354279,
+      "median_signed_change": 0.17673203349646,
+      "mean_absolute_change": 0.15634517372354279
+    },
+    "true_1_old_0_new_0": {
+      "images": 55,
+      "mean_signed_change": 0.15622792320006226,
+      "median_signed_change": 0.1501116305591858,
+      "mean_absolute_change": 0.1570098657008171
+    },
+    "true_1_old_0_new_1": {
+      "images": 46,
+      "mean_signed_change": 0.36263719346956574,
+      "median_signed_change": 0.35204465689069825,
+      "mean_absolute_change": 0.36263719346956574
+    },
+    "true_1_old_1_new_0": {
+      "images": 1,
+      "mean_signed_change": -0.19425901768836362,
+      "median_signed_change": -0.19425901768836362,
+      "mean_absolute_change": 0.19425901768836362
+    },
+    "true_1_old_1_new_1": {
+      "images": 98,
+      "mean_signed_change": 0.15194809375978613,
+      "median_signed_change": 0.13419786099348147,
+      "mean_absolute_change": 0.15387136413226835
+    }
+  },
+  "prediction_transitions": {
+    "true_0_old_0_new_0": 1564,
+    "true_0_old_0_new_1": 32,
+    "true_0_old_1_new_1": 4,
+    "true_1_old_0_new_0": 55,
+    "true_1_old_1_new_1": 98,
+    "true_1_old_0_new_1": 46,
+    "true_1_old_1_new_0": 1
+  },
+  "probability_rank_association": {
+    "spearman_rho": 0.9143974298411662,
+    "p_value": 0.0
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "experiment": "Sensitivity of baseline validation metrics to identified exact cross-split duplicates",
+  "duplicate_validation_paths_identified": 38,
+  "duplicate_validation_paths_matched": 38,
+  "duplicate_validation_paths_not_in_predictions": [],
+  "full_validation": {
+    "n": 1800,
+    "threshold": 0.5,
+    "tn": 1596,
+    "fp": 4,
+    "fn": 101,
+    "tp": 99,
+    "sensitivity": 0.495,
+    "specificity": 0.9975,
+    "precision": 0.9611650485436893,
+    "f1": 0.6534653465346535,
+    "roc_auc": 0.959853125,
+    "average_precision": 0.83715968884236,
+    "positive_images": 200,
+    "negative_images": 1600
+  },
+  "excluding_identified_validation_duplicates": {
+    "n": 1762,
+    "threshold": 0.5,
+    "tn": 1558,
+    "fp": 4,
+    "fn": 101,
+    "tp": 99,
+    "sensitivity": 0.495,
+    "specificity": 0.9974391805377721,
+    "precision": 0.9611650485436893,
+    "f1": 0.6534653465346535,
+    "roc_auc": 0.9593341869398206,
+    "average_precision": 0.8373962204492362,
+    "positive_images": 200,
+    "negative_images": 1562
+  },
+  "metric_changes_filtered_minus_full": {
+    "sensitivity": 0.0,
+    "specificity": -6.0819462227912346e-05,
+    "precision": 0.0,
+    "f1": 0.0,
+    "roc_auc": -0.0005189380601793303,
+    "average_precision": 0.00023653160687620023
+  },
+  "limitations": [
+    "The model was not retrained.",
+    "This is a sensitivity analysis of the existing predictions.",
+    "Excluding records does not correct any effects of duplicates on model training.",
+    "No exact duplicates does not establish patient-level independence.",
+    "The filtered subset is not an independently collected external test set.",
+    "The audit checks byte-identical files, not near-duplicates."
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "experiment": "TBX11K validation Grad-CAM threshold-sensitivity analysis",
+  "checkpoint": "models\\checkpoints\\densenet121_baseline.pt",
+  "split": "val",
+  "heatmap_target_class": 1,
+  "thresholds": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "images_evaluated": 200,
+  "boxes_evaluated": 309,
+  "localization_categories": {
+    "ObsoletePulmonaryTuberculosis": 61,
+    "ActiveTuberculosis": 248
+  },
+  "results_by_threshold": {
+    "0.25": {
+      "images_evaluated": 200,
+      "images_with_empty_heatmap": 0,
+      "box_coverage_union": {
+        "count": 200,
+        "mean": 0.46142355810586905,
+        "median": 0.4991135507245154
+      },
+      "heatmap_precision_union": {
+        "count": 200,
+        "mean": 0.10570816649650831,
+        "median": 0.06689070351302401
+      },
+      "mean_individual_box_coverage": {
+        "count": 200,
+        "mean": 0.45743671312900774,
+        "median": 0.47691052771241893
+      },
+      "median_individual_box_coverage": {
+        "count": 200,
+        "mean": 0.4569050489218647,
+        "median": 0.46859567330508145
+      }
+    },
+    "0.5": {
+      "images_evaluated": 200,
+      "images_with_empty_heatmap": 0,
+      "box_coverage_union": {
+        "count": 200,
+        "mean": 0.20214669357975193,
+        "median": 0.06935605644858198
+      },
+      "heatmap_precision_union": {
+        "count": 200,
+        "mean": 0.09884668478404635,
+        "median": 0.026228384431831366
+      },
+      "mean_individual_box_coverage": {
+        "count": 200,
+        "mean": 0.19775926258163515,
+        "median": 0.0674415874872401
+      },
+      "median_individual_box_coverage": {
+        "count": 200,
+        "mean": 0.195264179543714,
+        "median": 0.06552212452126552
+      }
+    },
+    "0.75": {
+      "images_evaluated": 200,
+      "images_with_empty_heatmap": 0,
+      "box_coverage_union": {
+        "count": 200,
+        "mean": 0.05361881429524354,
+        "median": 0.0
+      },
+      "heatmap_precision_union": {
+        "count": 200,
+        "mean": 0.09801215018723294,
+        "median": 0.0
+      },
+      "mean_individual_box_coverage": {
+        "count": 200,
+        "mean": 0.05205209051863484,
+        "median": 0.0
+      },
+      "median_individual_box_coverage": {
+        "count": 200,
+        "mean": 0.04839692182551307,
+        "median": 0.0
+      }
+    }
+  },
+  "limitations": [
+    "Evaluation is restricted to TB-labelled validation images with localization boxes.",
+    "Bounding boxes are coarse localization annotations, not pixel-perfect lesion masks.",
+    "Thresholds are predefined exploratory settings, not clinically validated values.",
+    "Metrics measure spatial consistency, not explanation faithfulness or clinical correctness.",
+    "Results do not establish patient-level independence or external generalization.",
+    "Threshold sensitivity alone does not establish whether spatial consistency adds value beyond model confidence."
+  ]
+}

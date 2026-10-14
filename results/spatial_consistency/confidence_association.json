@@ -1,0 +1,41 @@
+{
+  "experiment": "Exploratory association between TB confidence and Grad-CAM spatial-consistency metrics",
+  "input_file": "results\\spatial_consistency\\per_image_metrics.csv",
+  "images_evaluated": 200,
+  "bootstrap_replicates": 5000,
+  "random_seed": 42,
+  "results": {
+    "box_coverage_union": {
+      "n": 200,
+      "spearman": {
+        "estimate": 0.301406711671133,
+        "ci_95_lower": 0.17387728419081885,
+        "ci_95_upper": 0.42193956431326135
+      }
+    },
+    "heatmap_precision_union": {
+      "n": 200,
+      "spearman": {
+        "estimate": 0.17122648648648983,
+        "ci_95_lower": 0.03716281952932206,
+        "ci_95_upper": 0.2995818036520478
+      }
+    },
+    "mean_individual_box_coverage": {
+      "n": 200,
+      "spearman": {
+        "estimate": 0.2911937922160075,
+        "ci_95_lower": 0.1681919051668543,
+        "ci_95_upper": 0.40809352847374497
+      }
+    }
+  },
+  "limitations": [
+    "The analysis uses only TB-labelled validation images with localization boxes.",
+    "Spearman correlation measures association, not causation.",
+    "Association with confidence does not establish incremental predictive value.",
+    "The bootstrap interval assumes the sampled images are appropriate independent sampling units; patient-level independence has not been established.",
+    "Repeated threshold exploration and other analyses should be considered when interpreting the findings.",
+    "Bounding-box overlap does not establish explanation faithfulness or clinical correctness."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_manifest": "data\\interim\\tbx11k_manifest_deduplicated.csv",
+  "output_manifest": "data\\interim\\tbx11k_manifest_near_duplicate_excluded.csv",
+  "source_records": 8280,
+  "output_records": 8278,
+  "excluded_training_records": 2,
+  "source_split_counts": {
+    "train": 6480,
+    "val": 1800
+  },
+  "output_split_counts": {
+    "train": 6478,
+    "val": 1800
+  },
+  "excluded_records": [
+    {
+      "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s1174.png",
+      "split": "train",
+      "binary_label": "0"
+    },
+    {
+      "image_path": "data/raw/tbx11k/TBX11K/imgs/sick/s2023.png",
+      "split": "train",
+      "binary_label": "0"
+    }
+  ],
+  "validation_record_count_preserved": true,
+  "exclusion_scope": "Only the two specified training-side members of probable near-duplicate pairs were excluded. Validation records were retained.",
+  "limitations": "This is a targeted exclusion experiment, not proof that all near-duplicates or patient-level leakage have been eliminated."
+}

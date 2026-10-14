@@ -1,0 +1,32 @@
+{
+  "validation_loss": 0.148855085655426,
+  "sensitivity": 0.69,
+  "specificity": 0.985,
+  "precision": 0.8518518518518519,
+  "f1": 0.7624309392265194,
+  "roc_auc": 0.9539249999999999,
+  "average_precision": 0.841754715240403,
+  "tn": 1576,
+  "fp": 24,
+  "fn": 62,
+  "tp": 138,
+  "threshold": 0.5,
+  "validation_examples": 1800,
+  "experiment": "near_duplicate_excluded",
+  "epoch": 1,
+  "training_loss": 0.4113547511964659,
+  "seed": 42,
+  "batch_size": 4,
+  "learning_rate": 0.001,
+  "class_weights": [
+    0.18524235486984253,
+    1.8147575855255127
+  ],
+  "training_examples": 6478,
+  "training_non_tb": 5878,
+  "training_tb": 600,
+  "excluded_training_images": [
+    "data/raw/tbx11k/TBX11K/imgs/sick/s1174.png",
+    "data/raw/tbx11k/TBX11K/imgs/sick/s2023.png"
+  ]
+}

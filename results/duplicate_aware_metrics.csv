@@ -1,0 +1,2 @@
+validation_loss,sensitivity,specificity,precision,f1,roc_auc,pr_auc,tn,fp,fn,tp,threshold,validation_examples,epoch,training_loss,seed,batch_size,learning_rate,class_weights
+0.15839530774081748,0.72,0.9775,0.8,0.7578947368421053,0.9544375000000002,0.8433798802093281,1564,36,56,144,0.5,1800,1,0.41683999852875225,42,4,0.001,"[0.18518517911434174, 1.8148149251937866]"

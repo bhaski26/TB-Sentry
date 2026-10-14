@@ -1,0 +1,14 @@
+{
+  "source_manifest": "data\\interim\\tbx11k_manifest.csv",
+  "output_manifest": "data\\interim\\tbx11k_manifest_deduplicated.csv",
+  "source_records": 8400,
+  "output_records": 8280,
+  "excluded_train_validation_duplicate_records": 38,
+  "excluded_additional_training_duplicate_records": 82,
+  "output_split_counts": {
+    "train": 6480,
+    "val": 1800
+  },
+  "validation_records_preserved": true,
+  "method": "SHA-256 exact-content deduplication; validation retained unchanged; one unique training image per content hash; training copies of validation images excluded."
+}
