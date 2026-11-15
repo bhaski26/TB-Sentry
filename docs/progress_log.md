@@ -1,623 +1,781 @@
-# \# TB-Sentry — Implementation Progress Log
+# TB-Sentry - Implementation Progress Log
 
-#
+**Project title:** Tuberculosis Screening from Chest X-Rays with Explainability
 
-# \*\*Project title:\*\* TUBERCULOSIS SCREENING FROM CHEST X-RAYS WITH EXPLAINABILITY
+**Project name:** TB-Sentry
 
-# \*\*Project name:\*\* TB-Sentry
+**Last updated:** 15 November 2026
 
-# \*\*Status recorded:\*\* 12 October 2026
+**Project status:** Research prototype implemented; experimental evaluation and documentation completed.
 
-#
+---
 
-# \## 1. Project Objective
+# 1. Project Objective
 
-#
+TB-Sentry investigates a chest-X-ray tuberculosis screening classifier and whether quantitative spatial consistency of model explanations with available localization annotations can provide useful information for flagging predictions for human review.
 
-# TB-Sentry investigates a chest-X-ray tuberculosis screening classifier and whether quantitative spatial consistency of model explanations with available localization annotations can provide useful information for flagging predictions for human review.
+The intended pipeline consists of:
 
-#
+1. Prepare and validate dataset manifests.
+2. Train a binary TB/non-TB classifier.
+3. Evaluate classification performance using class-imbalance-aware metrics.
+4. Generate Grad-CAM explanations.
+5. Compare heatmap locations with available TB localization annotations.
+6. Investigate whether explanation consistency complements model confidence when identifying predictions for review.
+7. Build a demonstration interface.
 
-# The intended pipeline is:
+The project is an academic research prototype, not a clinically validated diagnostic system.
 
-#
+---
 
-# 1\. Prepare and validate dataset manifests.
+# 2. Current Scope and Terminology
 
-# 2\. Train a binary TB/non-TB classifier.
+The initial binary mapping is:
 
-# 3\. Evaluate classification performance with class-imbalance-aware metrics.
+| Source Category | Binary Label | Meaning |
+|---|---:|---|
+| `health` | 0 | Non-TB-labelled |
+| `sick` | 0 | Non-TB-labelled |
+| `tb` | 1 | TB-labelled |
 
-# 4\. Generate Grad-CAM explanations.
+This combines the available TB-labelled categories for the initial classification experiments.
 
-# 5\. Compare heatmap locations with available TB localization annotations.
+The classifier must not be described as specifically validated for active TB or as evidence of clinical generalization.
 
-# 6\. Investigate whether explanation consistency complements model confidence when identifying predictions for review.
+TBX11K bounding boxes are localization annotations, not pixel-level lesion masks. Heatmap-to-box measurements are described as spatial consistency with localization annotations, not proof that an explanation identifies the true clinical lesion.
 
-# 7\. Build a small demonstration interface if time permits.
+The central research question remains whether explanation consistency provides useful information beyond classifier confidence. The current experiments investigate this relationship but do not establish that it improves clinical or human review decisions.
 
-#
+---
 
-# The project is an academic research prototype, not a clinically validated diagnostic system.
+# 3. Dataset Preparation and Audit
 
-#
+The downloaded TBX11K package is stored locally under:
 
-# \## 2. Current Scope and Terminology
+`data/raw/tbx11k/TBX11K/`
 
-#
+Dataset images and annotations are excluded from version control.
 
-# The initial binary mapping is:
+A manifest-building implementation was developed to read the official train/validation lists and corresponding JSON annotation records, map source folders to binary labels, and create an intermediate manifest.
 
-#
+The original manifest is:
 
-# \- `health` → non-TB-labelled (0)
+`data/interim/tbx11k_manifest.csv`
 
-# \- `sick` → non-TB-labelled (0)
+## 3.1 Manifest Schema
 
-# \- `tb` → TB-labelled (1)
+The manifest contains:
 
-#
+- `image_path`
+- `split`
+- `source_category`
+- `binary_label`
+- `image_width`
+- `image_height`
+- `localization_boxes`
+- `localization_categories`
+- `annotation_status`
 
-# This combines the available TB-labelled categories for the first experiment. It must not be described as a classifier specifically validated for active TB, nor as evidence of clinical generalization.
+## 3.2 Original Manifest Audit Results
 
-#
+| Split | Total | TB-labelled | Non-TB-labelled | Images with Boxes | Images without Boxes |
+|---|---:|---:|---:|---:|---:|
+| Train | 6,600 | 600 | 6,000 | 599 | 6,001 |
+| Validation | 1,800 | 200 | 1,600 | 200 | 1,600 |
+| **Total** | **8,400** | **800** | **7,600** | **799** | **7,601** |
 
-# TBX11K bounding boxes are localization annotations, not pixel-level lesion masks. Any heatmap-to-box measurement should be described as \*\*spatial consistency with localization annotations\*\*, not proof that the explanation identifies the true clinical lesion.
+The training JSON contains 902 bounding boxes across 599 images.
 
-#
+The validation JSON contains 309 bounding boxes across 200 images.
 
-# The central research question remains an investigation: does explanation consistency provide useful information beyond classifier confidence? Improvement has not yet been demonstrated.
+## 3.3 Validation Checks
 
-#
+The following checks were performed:
 
-# \## 3. Dataset Preparation and Audit
+- Every listed image path exists.
+- Official list entries match corresponding JSON image records.
+- No duplicate image paths occur across the official train and validation lists.
+- Source categories are recognized.
+- Binary labels follow the configured mapping.
 
-#
+These checks validate paths and metadata. They do not establish patient-level independence or clinical validity.
 
-# The downloaded TBX11K package is stored locally under:
+## 3.4 Class Imbalance
 
-#
+The training set has a 1:10 TB-labelled-to-non-TB-labelled ratio.
 
-# `data/raw/tbx11k/TBX11K/`
+The validation set has a 1:8 ratio.
 
-#
+This imbalance motivates reporting:
 
-# Dataset images and annotations are excluded from version control. Refer to `data/README.md` for data provenance and handling rules.
+- Sensitivity
+- Specificity
+- Precision
+- F1-score
+- ROC-AUC
+- Average precision
+- Confusion matrices
 
-#
+Accuracy alone is insufficient to describe performance on this imbalanced dataset.
 
-# A manifest-building script, `scripts/build\_manifest.py`, was implemented. It reads the official TBX11K train/validation lists and corresponding JSON annotation records, maps source folders to binary labels, and writes the ignored intermediate manifest:
+## 3.5 Unresolved Test-Set Discrepancy
 
-#
+The downloaded package contains 3,302 files in its test directory, while published split information reports a 2,800-image test split.
 
-# `data/interim/tbx11k\_manifest.csv`
+The local `all_test.json` contains no bounding boxes.
 
-#
+This discrepancy remains unresolved. The downloaded test directory must not be treated as an independent labelled test set without further verification.
 
-# \### Manifest Schema
+---
 
-#
+# 4. Data Loading Implementation
 
-# The manifest contains:
+The project includes data-loading and preprocessing components.
 
-#
+Implemented components include:
 
-# \- `image\_path`
+- `src/tb_sentry/data/dataset.py`
+- `src/tb_sentry/data/transforms.py`
+- `tests/test_dataset.py`
+- `scripts/test_dataloader.py`
 
-# \- `split`
+The dataset implementation:
 
-# \- `source\_category`
+- Reads the CSV manifest.
+- Loads images using Pillow.
+- Resizes images to 224 × 224.
+- Converts images to tensors.
+- Applies ImageNet normalization.
+- Returns image tensors and labels.
+- Preserves image paths, source categories, localization boxes, localization categories, and annotation status.
 
-# \- `binary\_label`
+## 4.1 Initial Unit Tests
 
-# \- `image\_width`
+The initial dataset tests covered:
 
-# \- `image\_height`
+1. Training dataset counts.
+2. Validation dataset counts.
+3. Training sample format.
+4. Validation sample format.
+5. Rejection of an unsupported test split.
 
-# \- `localization\_boxes`
+All five initial dataset tests passed.
 
-# \- `localization\_categories`
+## 4.2 DataLoader and Model Smoke Test
 
-# \- `annotation\_status`
+The initial smoke test verified:
 
-#
+- Image batch shape: `(4, 3, 224, 224)`
+- Label batch shape: `(4,)`
+- Image dtype: `torch.float32`
+- Model output shape: `(4, 2)`
 
-# \### Manifest Audit Results
+The test also confirmed that variable-length localization metadata could be preserved by the custom collate function.
 
-#
+## 4.3 Environment Notes
 
-# | Split | Total | TB-labelled | Non-TB-labelled | Images with boxes | Images without boxes |
+Development and experimentation were performed on Windows using CPU-based PyTorch.
 
-# |---|---:|---:|---:|---:|---:|
+Pillow is used for image loading.
 
-# | Train | 6,600 | 600 | 6,000 | 599 | 6,001 |
+Earlier environment issues included a Windows application-control restriction affecting the torchvision native image extension and a compiled pandas DLL import failure. The implementation used Pillow and Python's standard-library CSV functionality rather than relying on those unavailable components.
 
-# | Validation | 1,800 | 200 | 1,600 | 200 | 1,600 |
+The Windows security policy was not bypassed or disabled to accommodate the project.
 
-# | Total | 8,400 | 800 | 7,600 | 799 | 7,601 |
+---
 
-#
+# 5. Baseline Classification Model
 
-# \### Validation Checks
+A binary classification pipeline using DenseNet-121 was implemented.
 
-#
+Implemented components include:
 
-# The following checks passed:
+- `src/tb_sentry/classification/densenet.py`
+- `scripts/train_baseline.py`
+- `scripts/export_validation_predictions.py`
 
-#
+## 5.1 Model Configuration
 
-# \- Every listed image exists.
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Initialization | ImageNet-pretrained weights |
+| Backbone | Frozen |
+| Classification head | New two-class linear layer |
+| Total parameters | 6,955,906 |
+| Trainable parameters | 2,050 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Batch size | 4 |
+| Epochs | 1 |
+| Random seed | 42 |
+| Loss function | Class-weighted cross-entropy |
+| Device | CPU |
+| Initial classification threshold | 0.50 |
 
-# \- Official list entries match the corresponding JSON image records.
+Class weights for `[non-TB, TB]` were approximately:
 
-# \- No duplicate image paths occur across the official train and validation lists.
+`[0.181818, 1.818182]`
 
-# \- Every image has a recognized source category.
+The weights compensate for the imbalance in the training labels.
 
-# \- Binary labels follow the configured mapping.
+## 5.2 Initial Validation Results
 
-#
+| Metric | Result |
+|---|---:|
+| Validation loss | 0.15485 |
+| Sensitivity | 49.50% |
+| Specificity | 99.75% |
+| Precision | 96.12% |
+| F1-score | 0.6535 |
+| ROC-AUC | 0.9599 |
+| Average precision | 0.8372 |
+| True negatives | 1,596 |
+| False positives | 4 |
+| False negatives | 101 |
+| True positives | 99 |
 
-# \*\*Important limitation:\*\* path-level split checks do not establish patient-level independence or rule out duplicate image content across datasets. These checks also do not establish clinical validity.
+These results come from one epoch, one seed, and the original validation split.
 
-#
+At threshold 0.50, the model misses 101 of the 200 TB-labelled validation images. This is an important limitation for a screening-oriented project.
 
-# The training set has a 1:10 TB-labelled-to-non-TB-labelled ratio. The validation set has a 1:8 ratio.
+The training script's `pr_auc` field stores scikit-learn average precision. Formal reporting therefore uses the term average precision (AP).
 
-#
+## 5.3 Generated Artifacts
 
-# This imbalance motivates reporting sensitivity, specificity, precision, F1-score, ROC-AUC, average precision, and confusion matrices rather than relying on accuracy alone.
+- `models/checkpoints/densenet121_baseline.pt`
+- `results/baseline_metrics.json`
+- `results/baseline_metrics.csv`
+- `results/tables/baseline_validation_predictions.csv`
 
-#
+The checkpoint is a local artifact and must not be committed to Git.
 
-# \### Localization Annotation Availability
+---
 
-#
+# 6. Threshold Analysis
 
-# The training JSON contains 6,600 image records and 902 bounding boxes across 599 images.
+The script `scripts/analyze_thresholds.py` evaluates thresholds from 0.05 to 0.95 in increments of 0.05 using saved validation predictions.
 
-#
+Generated artifacts include:
 
-# The validation JSON contains 1,800 image records, of which 200 have bounding boxes.
+- `results/tables/baseline_threshold_analysis.csv`
+- `results/figures/baseline_threshold_analysis.png`
 
-#
+## 6.1 Selected Results
 
-# Most images do not have localization boxes. Spatial-consistency analyses must therefore use only the subset with suitable annotations and explicitly report the number of evaluated images.
+| Threshold | Sensitivity | Specificity | Precision | F1-score | Balanced Accuracy | FN | FP |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 0.10 | 0.815 | 0.938 | 0.622 | 0.706 | 0.877 | 37 | 99 |
+| 0.20 | 0.735 | 0.979 | 0.812 | 0.772 | 0.857 | 53 | 34 |
+| 0.30 | 0.655 | 0.989 | 0.885 | 0.753 | 0.822 | 69 | 17 |
+| 0.50 | 0.495 | 0.998 | 0.961 | 0.653 | 0.746 | 101 | 4 |
 
-#
+Threshold 0.20 produced the highest F1-score among the evaluated thresholds.
 
-# \### Unresolved Test-Set Discrepancy
+However, it was selected using the same validation set on which performance was measured. This introduces selection optimism.
 
-#
+Threshold 0.20 is therefore not presented as a clinically appropriate operating point or an unbiased final performance estimate.
 
-# The downloaded package contains 3,302 files in its `test` directory, while published split information reports a 2,800-image test split. The local `all\_test.json` contains no bounding boxes.
+The model's output scores have not been shown to be calibrated probabilities.
 
-#
+---
 
-# This discrepancy remains unresolved.
+# 7. Exact-Duplicate Dataset Audit
 
-#
+An exact-duplicate audit was implemented using SHA-256 image-content hashing.
 
-# The downloaded test directory must not be treated as an independent labelled test set without further verification.
+The purpose was to identify identical image content within the dataset and prevent training images from duplicating validation images.
 
-#
+## 7.1 Audit Procedure
 
-# \## 4. Data Loading Implementation
+The duplicate-aware manifest was generated by:
 
-#
+1. Calculating SHA-256 hashes for image content.
+2. Identifying identical image hashes.
+3. Removing training copies of images also present in validation.
+4. Retaining one unique training image per content hash.
+5. Preserving all validation records.
 
-# Implemented components:
+## 7.2 Audit Results
 
-#
+| Description | Count |
+|---|---:|
+| Original records | 8,400 |
+| Output records | 8,280 |
+| Training-validation duplicate records excluded | 38 |
+| Additional training duplicate records excluded | 82 |
+| Final training examples | 6,480 |
+| Validation examples | 1,800 |
 
-# \- `src/tb\_sentry/data/dataset.py`
+The generated manifest is:
 
-# \- `src/tb\_sentry/data/transforms.py`
+`data/interim/tbx11k_manifest_deduplicated.csv`
 
-# \- `tests/test\_dataset.py`
+## 7.3 Interpretation
 
-# \- `scripts/test\_dataloader.py`
+The audit identified exact-content duplication in the original manifest.
 
-#
+The duplicate-aware manifest retains all 1,800 validation records while reducing the training set to 6,480 records.
 
-# The dataset class:
+SHA-256 deduplication addresses exact-content duplication. It does not establish patient-level independence or eliminate every possible near-duplicate relationship.
 
-#
+---
 
-# \- Reads the CSV manifest using Python's built-in `csv` module.
+# 8. Exact-Duplicate-Aware Classification Experiment
 
-# \- Loads images using Pillow.
+A second DenseNet-121 experiment was conducted using the exact-duplicate-aware manifest.
 
-# \- Resizes images to 224 × 224.
+## 8.1 Configuration
 
-# \- Converts images to tensors.
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Pretrained weights | ImageNet |
+| Backbone | Frozen |
+| Training examples | 6,480 |
+| Validation examples | 1,800 |
+| Seed | 42 |
+| Epochs | 1 |
+| Batch size | 4 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Loss | Weighted cross-entropy |
+| Threshold | 0.50 |
+| Device | CPU |
 
-# \- Applies ImageNet normalization.
+## 8.2 Results
 
-# \- Returns image tensors, labels, image paths, source categories, localization boxes, localization categories, and annotation status.
+| Metric | Result |
+|---|---:|
+| Validation loss | 0.1583953 |
+| Sensitivity | 0.7200 |
+| Specificity | 0.9775 |
+| Precision | 0.8000 |
+| F1-score | 0.7579 |
+| ROC-AUC | 0.95444 |
+| Average precision | 0.84338 |
+| True negatives | 1,564 |
+| False positives | 36 |
+| False negatives | 56 |
+| True positives | 144 |
 
-#
+## 8.3 Comparison with Original Baseline
 
-# \### Unit Test Results
+| Metric | Original Baseline | Exact-Duplicate-Aware |
+|---|---:|---:|
+| Sensitivity | 49.50% | 72.00% |
+| Specificity | 99.75% | 97.75% |
+| Precision | 96.12% | 80.00% |
+| F1-score | 0.6535 | 0.7579 |
+| ROC-AUC | 0.95985 | 0.95444 |
+| Average precision | 0.83716 | 0.84338 |
 
-#
+The duplicate-aware experiment achieved higher sensitivity and F1-score at threshold 0.50.
 
-# Five dataset tests passed in `.venv\_test`:
+Specificity and precision decreased, while ROC-AUC decreased slightly and average precision increased.
 
-#
+These differences do not establish that duplicate removal alone caused the performance changes or that the new model generalizes better.
 
-# 1\. Training dataset counts.
+## 8.4 Artifacts
 
-# 2\. Validation dataset counts.
+- `scripts/train_duplicate_aware.py`
+- `models/checkpoints/densenet121_duplicate_aware.pt`
+- `results/duplicate_aware_metrics.json`
+- `results/duplicate_aware_metrics.csv`
+- `results/baseline_experiment_comparison.csv`
 
-# 3\. Training sample format.
+---
 
-# 4\. Validation sample format.
+# 9. Targeted Near-Duplicate Exclusion Experiment
 
-# 5\. Rejection of an unsupported test split.
+A further experiment investigated the effect of excluding two identified probable near-duplicate images from the training data.
 
-#
+The excluded images were:
 
-# \### DataLoader and Model Smoke Test
+- `data/raw/tbx11k/TBX11K/imgs/sick/s1174.png`
+- `data/raw/tbx11k/TBX11K/imgs/sick/s2023.png`
 
-#
+## 9.1 Manifest Results
 
-# The smoke test passed with:
+| Description | Count |
+|---|---:|
+| Source records | 8,280 |
+| Excluded training records | 2 |
+| Final records | 8,278 |
+| Final training examples | 6,478 |
+| Validation examples | 1,800 |
 
-#
+The validation records were preserved.
 
-# \- Image batch shape: `(4, 3, 224, 224)`
+The resulting manifest is:
 
-# \- Label batch shape: `(4,)`
+`data/interim/tbx11k_manifest_near_duplicate_excluded.csv`
 
-# \- Image dtype: `torch.float32`
+## 9.2 Configuration
 
-# \- Model output shape: `(4, 2)`
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Pretrained weights | ImageNet |
+| Backbone | Frozen |
+| Training examples | 6,478 |
+| Training non-TB examples | 5,878 |
+| Training TB examples | 600 |
+| Validation examples | 1,800 |
+| Seed | 42 |
+| Epochs | 1 |
+| Batch size | 4 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Threshold | 0.50 |
+| Device | CPU |
 
-#
+## 9.3 Results
 
-# The test also confirmed that variable-length localization metadata could be preserved by the custom collate function.
+| Metric | Result |
+|---|---:|
+| Validation loss | 0.1488551 |
+| Sensitivity | 0.6900 |
+| Specificity | 0.9850 |
+| Precision | 0.8519 |
+| F1-score | 0.7624 |
+| ROC-AUC | 0.95393 |
+| Average precision | 0.84175 |
+| True negatives | 1,576 |
+| False positives | 24 |
+| False negatives | 62 |
+| True positives | 138 |
 
-#
+The experiment produced a different balance of sensitivity, specificity, precision, and F1-score.
 
-# \### Environment Notes
+It does not demonstrate that all near-duplicate images have been identified or that patient-level leakage has been eliminated.
 
-#
+---
 
-# Development is being performed on Windows with Python 3.11 and CPU-only PyTorch.
+# 10. Multi-Seed Evaluation
 
-#
+A multiseed experiment was conducted to investigate the variation in model performance across different random seeds.
 
-# Torchvision emits a warning because its native image extension is blocked by a Windows application-control policy. Consequently, `torchvision.io` image reading is not used. Pillow image loading works.
+The exact-duplicate-aware training manifest was used.
 
-#
+## 10.1 Configuration
 
-# The original environment's pandas import failed because a compiled DLL was blocked. Current scripts use the standard-library CSV reader rather than depending on pandas.
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Pretrained weights | ImageNet |
+| Backbone | Frozen |
+| Training examples | 6,480 |
+| Validation examples | 1,800 |
+| Seeds | 42, 123, 2026 |
+| Epochs per seed | 1 |
+| Batch size | 4 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Input size | 224 × 224 |
+| Threshold | 0.50 |
+| Device | CPU |
 
-#
+## 10.2 Per-Seed Results
 
-# The Windows security policy must not be bypassed or disabled to accommodate the project.
+| Metric | Seed 42 | Seed 123 | Seed 2026 |
+|---|---:|---:|---:|
+| Sensitivity | 0.7800 | 0.8400 | 0.7400 |
+| Specificity | 0.9544 | 0.9331 | 0.9769 |
+| Precision | 0.6812 | 0.6109 | 0.8000 |
+| F1-score | 0.7273 | 0.7074 | 0.7688 |
+| ROC-AUC | 0.96397 | 0.95930 | 0.96117 |
+| Average precision | 0.85047 | 0.84513 | 0.85644 |
 
-#
+## 10.3 Mean and Standard Deviation
 
-# \## 5. Baseline Classification Model
+| Metric | Mean | Standard Deviation |
+|---|---:|---:|
+| Sensitivity | 0.7867 | 0.0503 |
+| Specificity | 0.9548 | 0.0219 |
+| Precision | 0.6974 | 0.0956 |
+| F1-score | 0.7345 | 0.0314 |
+| ROC-AUC | 0.9615 | 0.0023 |
+| Average precision | 0.8507 | 0.0057 |
 
-#
+ROC-AUC and average precision showed relatively small variation across the three runs.
 
-# Implemented components:
+Threshold-dependent metrics, particularly precision, showed greater variation.
 
-#
+The results provide preliminary evidence of seed sensitivity. Three seeds and one training epoch per seed are insufficient to establish robust generalization or convergence.
 
-# \- `src/tb\_sentry/classification/densenet.py`
+## 10.4 Artifacts
 
-# \- `scripts/train\_baseline.py`
+- `results/multiseed/per_seed_metrics.csv`
+- `results/multiseed/`
+- Individual seed metric JSON files and experiment outputs.
 
-# \- `scripts/export\_validation\_predictions.py`
+---
 
-#
+# 11. Grad-CAM Explainability Implementation
 
-# \### Model Configuration
+Grad-CAM was implemented to generate visual explanations for the DenseNet-121 classifier.
 
-#
+The analysis focuses on the TB-labelled output class.
 
-# | Parameter | Value |
+The generated heatmaps are intended to provide a visual indication of image regions associated with the model's class score.
 
-# |---|---|
+## 11.1 Explanation Workflow
 
-# | Architecture | DenseNet-121 |
+1. Load the trained DenseNet-121 checkpoint.
+2. Prepare the input chest X-ray using the model preprocessing pipeline.
+3. Generate the TB-class activation map using Grad-CAM.
+4. Normalize the heatmap for visualization and subsequent analysis.
+5. Overlay the heatmap on the input image for visual inspection.
+6. Compare activation regions with available localization annotations.
 
-# | Initialization | ImageNet-pretrained weights |
+The analysis includes validation images with available bounding-box annotations.
 
-# | Backbone | Frozen |
+## 11.2 Interpretation
 
-# | Classification head | New two-class linear layer |
+Grad-CAM provides a post-hoc visualization of model activation patterns.
 
-# | Total parameters | 6,955,906 |
+A heatmap is not a confirmed tuberculosis lesion segmentation, a clinical localization result, or proof that the model relies on medically meaningful features.
 
-# | Trainable parameters | 2,050 |
+The quality and reliability of the explanations require separate evaluation.
 
-# | Optimizer | Adam |
+---
 
-# | Learning rate | 0.001 |
+# 12. Grad-CAM Spatial Consistency Evaluation
 
-# | Batch size | 4 |
+A quantitative spatial evaluation was conducted to examine the relationship between Grad-CAM activation regions and available validation bounding boxes.
 
-# | Epochs | 1 |
+## 12.1 Evaluation Dataset
 
-# | Random seed | 42 |
+| Description | Count |
+|---|---:|
+| Validation images with boxes | 200 |
+| Total bounding boxes | 309 |
+| ActiveTuberculosis boxes | 248 |
+| ObsoletePulmonaryTuberculosis boxes | 61 |
 
-# | Loss function | Class-weighted cross-entropy |
+The spatial evaluation used the original `tbx11k_manifest.csv` and the baseline checkpoint.
 
-# | Device | CPU |
+This differs from the multiseed experiments, which used the exact-duplicate-aware manifest.
 
-# | Initial classification threshold | 0.50 |
+## 12.2 Method
 
-#
+The evaluation procedure involved:
 
-# The class weights for `\[non-TB, TB]` were approximately:
+1. Selecting TB-labelled validation images with available bounding-box annotations.
+2. Generating Grad-CAM heatmaps for the TB-labelled output class.
+3. Resizing and normalizing heatmaps.
+4. Scaling annotation coordinates to the 224 × 224 model input dimensions.
+5. Thresholding normalized heatmaps at selected values.
+6. Comparing activated regions with the union of available bounding boxes.
 
-#
+The x and y coordinates were scaled independently to match the resized image dimensions.
 
-# `\[0.181818, 1.818182]`
+## 12.3 Evaluation Metrics
 
-#
+**Union box coverage:** Measures the proportion of annotated bounding-box area covered by the thresholded heatmap.
 
-# The weights compensate for the imbalance in the training labels.
+**Heatmap precision:** Measures the proportion of highlighted heatmap pixels that fall inside the annotated bounding-box union.
 
-#
+These measurements describe spatial overlap and are not clinical diagnostic metrics.
 
-# \### Generated Artifacts
+## 12.4 Results at Heatmap Threshold 0.50
 
-#
+| Metric | Mean | Median |
+|---|---:|---:|
+| Union box coverage | 20.21% | 6.94% |
+| Heatmap precision | 9.88% | 2.62% |
+| Mean individual box coverage | 19.78% | 6.74% |
 
-# The experiment produced:
+## 12.5 Threshold Sensitivity Analysis
 
-#
+| Heatmap Threshold | Mean Union Box Coverage | Median Union Box Coverage | Mean Heatmap Precision |
+|---|---:|---:|---:|
+| 0.25 | 46.14% | 49.91% | 10.57% |
+| 0.50 | 20.21% | 6.94% | 9.88% |
+| 0.75 | 5.36% | 0.00% | 9.80% |
 
-# \- `models/checkpoints/densenet121\_baseline.pt`
+No empty heatmaps were reported at the evaluated thresholds.
 
-# \- `results/baseline\_metrics.json`
+## 12.6 Interpretation
 
-# \- `results/baseline\_metrics.csv`
+Spatial overlap depends strongly on the selected heatmap threshold.
 
-# \- `results/tables/baseline\_validation\_predictions.csv`
+At threshold 0.50, mean union box coverage was approximately 20.21%, while mean heatmap precision was approximately 9.88%.
 
-#
+The relatively low median values indicate that the mean results should not be interpreted as consistent localization performance across all images.
 
-# The checkpoint is a local artifact and must not be committed to Git.
+Grad-CAM spatial overlap is an exploratory explainability measurement. It does not establish that the model has learned the correct pathology or that its predictions are clinically interpretable.
 
-#
+---
 
-# \### Initial Validation Results
+# 13. Confidence and Localization Association
 
-#
+An exploratory analysis investigated whether model confidence is associated with Grad-CAM spatial overlap with available bounding-box annotations.
 
-# | Metric | Result |
+## 13.1 Evaluation Setup
 
-# |---|---:|
+| Parameter | Value |
+|---|---|
+| Validation images | 200 |
+| Association method | Spearman rank correlation |
+| Bootstrap repetitions | 5,000 |
+| Bootstrap random seed | 42 |
 
-# | Validation loss | 0.15485 |
+## 13.2 Results
 
-# | Sensitivity | 49.50% |
+| Spatial Metric | Spearman Correlation | 95% Bootstrap Interval |
+|---|---:|---:|
+| Union box coverage | 0.3014 | [0.1739, 0.4219] |
+| Heatmap precision | 0.1712 | [0.0372, 0.2996] |
+| Mean individual box coverage | 0.2912 | [0.1682, 0.4081] |
 
-# | Specificity | 99.75% |
+## 13.3 Interpretation
 
-# | Precision | 96.12% |
+The observed Spearman correlations are positive, indicating a positive association between model confidence and the evaluated spatial measurements in this validation sample.
 
-# | F1-score | 0.6535 |
+The association is stronger for union box coverage and mean individual box coverage than for heatmap precision.
 
-# | ROC-AUC | 0.9599 |
+These findings are exploratory. They do not demonstrate causality, incremental predictive value, or clinical validity.
 
-# | Average precision | 0.8372 |
+The bootstrap analysis assumes that the sampled observations are suitable independent sampling units. Patient-level independence has not been established, so the intervals should be interpreted cautiously.
 
-# | True negatives | 1,596 |
+---
 
-# | False positives | 4 |
+# 14. Software Testing and Demonstration Interface
 
-# | False negatives | 101 |
+A Streamlit-based demonstration interface was implemented and run successfully.
 
-# | True positives | 99 |
+The interface provides a way to interact with the implemented image-classification workflow.
 
-#
+The demonstration is intended for research and educational purposes. It is not a clinical diagnostic application.
 
-# These results come from one epoch, one seed, and the current validation split. They are preliminary, not a final performance estimate.
+## 14.1 Automated Testing
 
-#
+The project test suite was executed using:
 
-# At threshold 0.50, the model misses 101 of the 200 TB-labelled validation images. This is an important limitation for a screening-oriented project.
+```cmd
+set PYTHONPATH=src
+.venv_test\Scripts\python.exe -m pytest -q
+```
 
-#
+## 14.2 Test Results
 
-# \*\*Metric naming note:\*\* the current training script's `pr\_auc` field stores scikit-learn average precision. In formal reporting, call this \*\*average precision (AP)\*\* unless trapezoidal area under the precision-recall curve is explicitly calculated.
+| Item | Result |
+|---|---|
+| Test framework | pytest |
+| Tests passed | 13 |
+| Tests failed | 0 |
+| Execution time | 5.78 seconds |
+| Overall result | Passed |
 
-#
+The reported test run completed with all 13 tests passing.
 
-# \## 6. Threshold Analysis
+This provides evidence that the tested software components behaved as expected under the available test cases. It does not establish clinical correctness or diagnostic validity.
 
-#
+## 14.3 Demonstration Components
 
-# The script `scripts/analyze\_thresholds.py` evaluates thresholds from 0.05 to 0.95 in increments of 0.05 using the saved validation predictions.
+The project includes:
 
-#
+- `app.py`
+- `requirements-demo.txt`
+- `run_demo.bat`
 
-# It produces:
+The demonstration interface was run successfully.
 
-#
+---
 
-# \- `results/tables/baseline\_threshold\_analysis.csv`
+# 15. Overall Implementation Status
 
-# \- `results/figures/baseline\_threshold\_analysis.png`
+| Component | Status |
+|---|---|
+| Project structure | Implemented |
+| Dataset preparation | Completed |
+| Original manifest generation | Completed |
+| Dataset validation | Completed |
+| Data loading and preprocessing | Implemented |
+| Initial dataset unit tests | Passed |
+| DenseNet-121 baseline | Completed |
+| Baseline evaluation | Completed |
+| Threshold analysis | Completed |
+| Exact-duplicate audit | Completed |
+| Duplicate-aware manifest | Completed |
+| Duplicate-aware classification | Completed |
+| Targeted near-duplicate exclusion | Completed |
+| Multiseed evaluation | Completed |
+| Grad-CAM implementation | Completed |
+| Spatial consistency evaluation | Completed |
+| Confidence-localization association | Completed |
+| Automated software testing | 13 tests passed |
+| Demonstration interface | Implemented and run |
+| Experiment documentation | Updated |
 
-#
+---
 
-# \### Selected Results
+# 16. Known Limitations and Open Risks
 
-#
+1. **Limited training duration:** The reported classification experiments used one epoch. They do not establish convergence or optimal performance.
 
-# | Threshold | Sensitivity | Specificity | Precision | F1-score | Balanced Accuracy | FN | FP |
+2. **Limited seed count:** The multiseed evaluation includes only three seeds.
 
-# |---|---:|---:|---:|---:|---:|---:|---:|
+3. **Frozen backbone:** The DenseNet-121 feature extractor remained frozen in the reported experiments.
 
-# | 0.10 | 0.815 | 0.938 | 0.622 | 0.706 | 0.877 | 37 | 99 |
+4. **No independent final test evaluation:** The downloaded test-set discrepancy remains unresolved.
 
-# | 0.20 | 0.735 | 0.979 | 0.812 | 0.772 | 0.857 | 53 | 34 |
+5. **Repeated validation use:** The validation set was used for multiple experiments and threshold analysis, introducing potential selection optimism.
 
-# | 0.30 | 0.655 | 0.989 | 0.885 | 0.753 | 0.822 | 69 | 17 |
+6. **Patient-level independence:** Patient-level grouping and independence have not been established.
 
-# | 0.50 | 0.495 | 0.998 | 0.961 | 0.653 | 0.746 | 101 | 4 |
+7. **Incomplete near-duplicate assessment:** Exact SHA-256 deduplication and targeted exclusion of two probable near-duplicates do not prove that every related image has been identified.
 
-#
+8. **Class imbalance:** The dataset contains substantially more non-TB-labelled images than TB-labelled images.
 
-# Among the evaluated thresholds, 0.20 produced the highest F1-score:
+9. **Probability calibration:** Model probability calibration has not been established.
 
-#
+10. **Coarse localization annotations:** Bounding boxes are not pixel-level segmentation masks.
 
-# \- Sensitivity: 73.5%
+11. **Explainability limitations:** Grad-CAM visualizations and spatial overlap measurements do not prove causal faithfulness or clinical correctness.
 
-# \- Specificity: 97.9%
+12. **Dataset scope:** The experiments use the available TBX11K dataset and do not establish performance across independent hospitals, populations, or imaging equipment.
 
-# \- Precision: 81.2%
+13. **Clinical validation:** The system has not undergone prospective clinical evaluation or clinical validation.
 
-# \- F1-score: 0.772
+14. **Deployment readiness:** The demonstration interface is a research prototype and must not be treated as a medical diagnostic product.
 
-# \- False negatives: 53
+---
 
-# \- False positives: 34
+# 17. Review Readiness
 
-#
+The current implementation supports demonstrating:
 
-# \### Interpretation
+- Dataset audit and manifest generation.
+- Data loading and preprocessing.
+- DenseNet-121 baseline classification.
+- Validation metrics and confusion matrices.
+- Threshold trade-offs.
+- Exact-duplicate and targeted near-duplicate audits.
+- Duplicate-aware classification experiments.
+- Multiseed evaluation.
+- Grad-CAM visual explanations.
+- Spatial consistency measurements.
+- Confidence-localization association analysis.
+- Automated software tests.
+- The Streamlit demonstration interface.
 
-#
+The project can be presented as an implemented research pipeline with preliminary classification results and exploratory explainability analysis.
 
-# Lowering the threshold increases sensitivity but also increases false positives.
+The results must be described as validation experiments, not independent clinical performance estimates.
 
-#
+---
 
-# At threshold 0.10, the model detects more TB-labelled validation images but produces substantially more false positives.
+# 18. Final Progress Statement
 
-#
+TB-Sentry has progressed from initial dataset preparation and baseline classification to duplicate-aware experimentation, multiseed evaluation, Grad-CAM visualization, spatial consistency analysis, confidence-association analysis, automated software testing, and a working demonstration interface.
 
-# At threshold 0.30, the model produces fewer false positives but misses more TB-labelled validation images.
+The project demonstrates a functioning research pipeline for binary TB-labelled chest X-ray classification and exploratory explainability analysis.
 
-#
+The experimental results provide preliminary evidence of classification performance and measurable relationships between model activation maps and available localization annotations.
 
-# Threshold 0.20 provides the highest F1-score among the thresholds examined. However, it is only a descriptive result on the current validation set.
+However, the current evidence does not establish clinical diagnostic performance, reliable lesion localization, patient-level generalization, or clinical deployment readiness.
 
-#
-
-# Selecting a threshold on the validation set and reporting performance on that same set introduces selection optimism. Therefore, threshold 0.20 must not be presented as a clinically appropriate operating point or an unbiased final performance estimate.
-
-#
-
-# The model's output scores have not yet been shown to be calibrated probabilities. Calibration should be evaluated before confidence is used in the proposed trust layer.
-
-#
-
-# \## 7. Reproducibility and Version-Control Policy
-
-#
-
-# The repository should contain source code, tests, configuration, documentation, and selected small result summaries.
-
-#
-
-# Do not commit:
-
-#
-
-# \- Raw datasets or annotations.
-
-# \- Generated manifests under `data/interim/`.
-
-# \- Model checkpoint files.
-
-# \- Large generated artifacts or caches.
-
-# \- Secrets or machine-specific absolute paths.
-
-#
-
-# Verify `.gitignore` before staging files.
-
-#
-
-# \## 8. Known Limitations and Open Risks
-
-#
-
-# 1\. Only one training epoch and one random seed have been evaluated.
-
-# 2\. The backbone is frozen; alternative training configurations have not been compared.
-
-# 3\. Patient-level independence and content-level duplicates have not been established.
-
-# 4\. The test directory/list discrepancy remains unresolved.
-
-# 5\. External dataset overlap has not been ruled out.
-
-# 6\. Most images do not have localization boxes.
-
-# 7\. Bounding boxes are coarse localization annotations, not pixel-level ground truth.
-
-# 8\. Confidence calibration has not been assessed.
-
-# 9\. No Grad-CAM results or explanation-consistency results have been produced yet.
-
-# 10\. No evidence yet shows that explanation consistency improves review decisions over confidence alone.
-
-#
-
-# \## 9. Next Steps
-
-#
-
-# Priority order:
-
-#
-
-# 1\. Commit the current validated code and documentation without raw data or checkpoints.
-
-# 2\. Implement Grad-CAM for the trained DenseNet-121.
-
-# 3\. Save a small set of qualitative explanation examples.
-
-# 4\. Add tests for heatmap dimensions, finite values, and inference consistency.
-
-# 5\. Define a fixed heatmap normalization and thresholding protocol before measuring spatial consistency.
-
-# 6\. Compare heatmaps against available localization boxes on the annotated subset only.
-
-# 7\. Report box-based spatial consistency without claiming pixel-level clinical correctness.
-
-# 8\. Evaluate whether spatial consistency adds information beyond confidence.
-
-# 9\. Revisit training duration and repeatability after the explanation pipeline works.
-
-# 10\. Resolve test-data provenance and investigate patient/content-level leakage before making generalization claims.
-
-# 11\. Add a demonstration interface only after the core experiment is reproducible.
-
-#
-
-# \## 10. Review Readiness
-
-#
-
-# For the first project review, the current evidence supports demonstrating:
-
-#
-
-# \- Dataset audit and manifest generation.
-
-# \- Tested data loading.
-
-# \- A working DenseNet-121 baseline.
-
-# \- Validation metrics.
-
-# \- Threshold trade-offs.
-
-#
-
-# Explainability and trust-layer experiments remain pending and must be presented as planned work, not completed results.
+**Overall progress:** Core research prototype implemented and experimentally evaluated. Experimental results and limitations documented. Further training, independent testing, patient-level validation, and clinical evaluation would be required before making stronger claims.

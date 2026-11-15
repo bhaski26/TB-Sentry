@@ -1,291 +1,737 @@
-# \# TB-Sentry — Experiment Log
+# TB-Sentry - Experiment Log
 
-#
+**Project:** TB-Sentry: An Explainable Deep Learning System for Tuberculosis Screening from Chest X-Rays
 
-# \## EXP-000: TBX11K Manifest Audit
+**Document purpose:** Record dataset audits, model training experiments, evaluation results, explainability experiments, software testing, and experimental limitations.
 
-#
+**Last updated:** 15 November 2026
 
-# \*\*Status:\*\* Completed
+---
 
-# \*\*Purpose:\*\* Build a reproducible train/validation index without copying dataset images into Git.
+# EXP-000: TBX11K Manifest Audit
 
-#
+**Status:** Completed
 
-# \### Dataset Summary
+**Purpose:** Build a reproducible train/validation index without copying dataset images into Git.
 
-#
+## Dataset Summary
 
-# | Split | Total Images | TB-labelled | Non-TB-labelled |
+| Split | Total Images | TB-labelled | Non-TB-labelled |
+|---|---:|---:|---:|
+| Train | 6,600 | 600 | 6,000 |
+| Validation | 1,800 | 200 | 1,600 |
+| **Total** | **8,400** | **800** | **7,600** |
 
-# |---|---:|---:|---:|
+## Localization Annotations
 
-# | Train | 6,600 | 600 | 6,000 |
+- Training images with bounding boxes: 599.
+- Bounding boxes in the training JSON: 902.
+- Validation images with bounding boxes: 200.
+- Validation bounding boxes: 309.
+- Most images do not contain localization annotations.
 
-# | Validation | 1,800 | 200 | 1,600 |
+## Label Mapping
 
-# | Total | 8,400 | 800 | 7,600 |
+| Original Category | Binary Label | Meaning |
+|---|---:|---|
+| health | 0 | Non-TB |
+| sick | 0 | Non-TB |
+| tb | 1 | TB-labelled |
 
-#
+## Checks Performed
 
-# \### Localization Annotations
+- Every listed image path exists.
+- List records match the corresponding JSON records.
+- No duplicate image paths occur across train and validation lists.
+- Source categories are recognized.
+- Binary labels follow the configured mapping.
 
-#
+These checks validate paths and metadata. They do not establish patient-level independence, clinical validity, or the absence of duplicate image content.
 
-# \- Training images with boxes: 599.
+## Unresolved Test-Set Issue
 
-# \- Bounding boxes in the training JSON: 902.
+The downloaded package contains 3,302 test images, while published split information reports 2,800. The local `all_test.json` contains no bounding boxes.
 
-# \- Validation images with boxes: 200.
+This discrepancy remains unresolved. The downloaded directory must not be treated as a labelled independent test set without further verification.
 
-# \- Most images have no localization boxes.
+---
 
-#
+# EXP-001: Frozen DenseNet-121 Baseline
 
-# \### Checks Performed
+**Status:** Completed; preliminary
 
-#
+**Task:** Binary TB-labelled versus non-TB-labelled classification.
 
-# \- Every listed image path exists.
+**Dataset:** Original TBX11K train and validation splits represented in `data/interim/tbx11k_manifest.csv`.
 
-# \- List records match the corresponding JSON records.
+**Date recorded:** 12 October 2026
 
-# \- No duplicate image paths occur across train and validation lists.
+## Configuration
 
-# \- Source categories are recognized.
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Pretrained weights | ImageNet |
+| Backbone | Frozen |
+| Classification head | Two-class linear layer |
+| Training examples | 6,600 |
+| Validation examples | 1,800 |
+| Training positives | 600 |
+| Training negatives | 6,000 |
+| Validation positives | 200 |
+| Validation negatives | 1,600 |
+| Batch size | 4 |
+| Epochs | 1 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Seed | 42 |
+| Loss | Weighted cross-entropy |
+| Class weights [non-TB, TB] | [0.181818, 1.818182] |
+| Device | CPU |
+| Initial threshold | 0.50 |
 
-# \- Binary labels follow the configured mapping.
+## Results at Threshold 0.50
 
-#
+| Metric | Result |
+|---|---:|
+| Validation loss | 0.1548466 |
+| Sensitivity | 0.4950 |
+| Specificity | 0.9975 |
+| Precision | 0.9612 |
+| F1-score | 0.6535 |
+| ROC-AUC | 0.95985 |
+| Average precision | 0.83716 |
+| True negatives | 1,596 |
+| False positives | 4 |
+| False negatives | 101 |
+| True positives | 99 |
 
-# These checks validate paths and metadata. They do not establish patient-level independence, clinical validity, or absence of duplicate image content.
+## Threshold Sweep
 
-#
+Thresholds from 0.05 to 0.95, in increments of 0.05, were evaluated using the same validation predictions.
 
-# \### Unresolved Test-Set Issue
+The best F1-score among the evaluated thresholds was approximately 0.772 at threshold 0.20.
 
-#
+| Metric | Result |
+|---|---:|
+| Threshold | 0.20 |
+| Sensitivity | 0.735 |
+| Specificity | 0.979 |
+| Precision | 0.812 |
+| F1-score | 0.772 |
+| False negatives | 53 |
+| False positives | 34 |
 
-# The downloaded package contains 3,302 test images, while published split information reports 2,800. The local `all\_test.json` contains no bounding boxes.
+## Interpretation
 
-#
+The model has a strong preliminary ROC-AUC, but at threshold 0.50 it misses approximately half of the TB-labelled validation cases.
 
-# This discrepancy remains unresolved. Do not use the downloaded directory as a labelled independent test set without further verification.
+The threshold sweep illustrates the trade-off between sensitivity and specificity.
 
-#
+Threshold 0.20 is not declared a clinical operating threshold. It was selected using the current validation set, so reporting the same validation results as an unbiased final estimate would be inappropriate.
 
-# \---
+The output scores have not been calibrated.
 
-#
+## Artifacts
 
-# \## EXP-001: Frozen DenseNet-121 Baseline
+- `models/checkpoints/densenet121_baseline.pt`
+- `results/baseline_metrics.json`
+- `results/baseline_metrics.csv`
+- `results/tables/baseline_validation_predictions.csv`
+- `results/tables/baseline_threshold_analysis.csv`
+- `results/figures/baseline_threshold_analysis.png`
 
-#
+## Limitations
 
-# \*\*Status:\*\* Completed; preliminary
+1. Single epoch.
+2. Single seed.
+3. Frozen backbone.
+4. No independent final test evaluation.
+5. Patient-level and content-level leakage checks were incomplete at this stage.
+6. Probability calibration has not been assessed.
 
-# \*\*Task:\*\* Binary TB-labelled versus non-TB-labelled classification
+---
 
-# \*\*Dataset:\*\* TBX11K official train and validation splits as represented in `data/interim/tbx11k\_manifest.csv`
+# EXP-002: Exact-Duplicate Dataset Audit
 
-# \*\*Date recorded:\*\* 12 October 2026
+**Status:** Completed
 
-#
+**Purpose:** Investigate exact duplicate image content within the dataset and prevent training images from duplicating validation images.
 
-# \### Configuration
+**Method:** SHA-256 content hashing.
 
-#
+**Date recorded:** 14 October 2026
 
-# | Parameter | Value |
+## Procedure
 
-# |---|---|
+The original manifest was audited using image-content hashes.
 
-# | Architecture | DenseNet-121 |
+A duplicate-aware manifest was generated by:
 
-# | Pretrained weights | ImageNet |
+1. Identifying images with identical SHA-256 content hashes.
+2. Removing training copies of images also present in the validation split.
+3. Retaining one unique training image per content hash.
+4. Preserving the validation records.
 
-# | Backbone | Frozen |
+## Audit Results
 
-# | Classification head | Two-class linear layer |
+| Description | Count |
+|---|---:|
+| Original records | 8,400 |
+| Output records | 8,280 |
+| Training-validation duplicate records excluded | 38 |
+| Additional training duplicate records excluded | 82 |
+| Final training examples | 6,480 |
+| Validation examples | 1,800 |
 
-# | Training examples | 6,600 |
+The output manifest is:
 
-# | Validation examples | 1,800 |
+`data/interim/tbx11k_manifest_deduplicated.csv`
 
-# | Training positives | 600 |
+## Interpretation
 
-# | Training negatives | 6,000 |
+The audit identified exact-content duplication within the original manifest.
 
-# | Validation positives | 200 |
+The resulting manifest retains all 1,800 validation records while reducing the training set to 6,480 records.
 
-# | Validation negatives | 1,600 |
+This procedure addresses exact-content duplication according to SHA-256 hashes. It does not establish patient-level independence or eliminate all possible near-duplicate relationships.
 
-# | Batch size | 4 |
+## Artifacts
 
-# | Epochs | 1 |
+- `scripts/audit_within_split_duplicates.py`
+- `scripts/build_duplicate_aware_manifest.py`
+- `scripts/verify_duplicate_aware_manifest.py`
+- `results/data_audit/duplicate_aware_manifest_report.json`
 
-# | Optimizer | Adam |
+---
 
-# | Learning rate | 0.001 |
+# EXP-003: Exact-Duplicate-Aware DenseNet-121 Experiment
 
-# | Seed | 42 |
+**Status:** Completed; preliminary
 
-# | Loss | Weighted cross-entropy |
+**Task:** Evaluate DenseNet-121 using the exact-duplicate-aware training manifest.
 
-# | Class weights `\[non-TB, TB]` | `\[0.181818, 1.818182]` |
+**Date recorded:** 14 October 2026
 
-# | Device | CPU |
+## Configuration
 
-# | Initial threshold | 0.50 |
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Pretrained weights | ImageNet |
+| Backbone | Frozen |
+| Classification head | Trainable |
+| Training manifest | `tbx11k_manifest_deduplicated.csv` |
+| Training examples | 6,480 |
+| Validation examples | 1,800 |
+| Seed | 42 |
+| Epochs | 1 |
+| Batch size | 4 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Loss | Weighted cross-entropy |
+| Threshold | 0.50 |
+| Device | CPU |
 
-#
+## Results at Threshold 0.50
 
-# \### Results at Threshold 0.50
+| Metric | Result |
+|---|---:|
+| Validation loss | 0.1583953 |
+| Sensitivity | 0.7200 |
+| Specificity | 0.9775 |
+| Precision | 0.8000 |
+| F1-score | 0.7579 |
+| ROC-AUC | 0.95444 |
+| Average precision | 0.84338 |
+| True negatives | 1,564 |
+| False positives | 36 |
+| False negatives | 56 |
+| True positives | 144 |
 
-#
+## Comparison with Original Baseline
 
-# | Metric | Result |
+| Metric | Original Baseline | Exact-Duplicate-Aware |
+|---|---:|---:|
+| Sensitivity | 49.50% | 72.00% |
+| Specificity | 99.75% | 97.75% |
+| Precision | 96.12% | 80.00% |
+| F1-score | 0.6535 | 0.7579 |
+| ROC-AUC | 0.95985 | 0.95444 |
+| Average precision | 0.83716 | 0.84338 |
 
-# |---|---:|
+## Interpretation
 
-# | Validation loss | 0.1548466 |
+At threshold 0.50, the exact-duplicate-aware experiment achieved higher sensitivity and F1-score than the original baseline.
 
-# | Sensitivity | 0.4950 |
+Specificity and precision decreased, while ROC-AUC decreased slightly and average precision increased.
 
-# | Specificity | 0.9975 |
+These findings show a difference in operating characteristics between the two experiments. They do not establish that duplicate removal alone caused the performance changes or that the new model generalizes better.
 
-# | Precision | 0.9612 |
+Both experiments use the same validation set, and the validation results have been examined repeatedly.
 
-# | F1-score | 0.6535 |
+## Artifacts
 
-# | ROC-AUC | 0.95985 |
+- `scripts/train_duplicate_aware.py`
+- `models/checkpoints/densenet121_duplicate_aware.pt`
+- `results/duplicate_aware_metrics.json`
+- `results/duplicate_aware_metrics.csv`
+- `results/baseline_experiment_comparison.csv`
 
-# | Average precision | 0.83716 |
+---
 
-# | True negatives | 1,596 |
+# EXP-004: Targeted Near-Duplicate Exclusion
 
-# | False positives | 4 |
+**Status:** Completed; preliminary
 
-# | False negatives | 101 |
+**Purpose:** Investigate the effect of excluding two identified probable near-duplicate images from the training data.
 
-# | True positives | 99 |
+**Date recorded:** 14 October 2026
 
-#
+## Excluded Images
 
-# \### Threshold Sweep
+The following training images were excluded:
 
-#
+- `data/raw/tbx11k/TBX11K/imgs/sick/s1174.png`
+- `data/raw/tbx11k/TBX11K/imgs/sick/s2023.png`
 
-# Thresholds from 0.05 to 0.95, in increments of 0.05, were evaluated using the same validation predictions.
+## Manifest Summary
 
-#
+The experiment uses the exact-duplicate-aware manifest as its source.
 
-# The best F1-score among the evaluated thresholds was 0.772 at threshold 0.20:
+| Description | Count |
+|---|---:|
+| Source records | 8,280 |
+| Excluded training records | 2 |
+| Final records | 8,278 |
+| Final training examples | 6,478 |
+| Validation examples | 1,800 |
 
-#
+The validation records were preserved.
 
-# \- Sensitivity: 0.735.
+The output manifest is:
 
-# \- Specificity: 0.979.
+`data/interim/tbx11k_manifest_near_duplicate_excluded.csv`
 
-# \- Precision: 0.812.
+## Configuration
 
-# \- False negatives: 53.
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Pretrained weights | ImageNet |
+| Backbone | Frozen |
+| Training examples | 6,478 |
+| Validation examples | 1,800 |
+| Training non-TB examples | 5,878 |
+| Training TB examples | 600 |
+| Seed | 42 |
+| Epochs | 1 |
+| Batch size | 4 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Loss | Weighted cross-entropy |
+| Threshold | 0.50 |
+| Device | CPU |
 
-# \- False positives: 34.
+## Results at Threshold 0.50
 
-#
+| Metric | Result |
+|---|---:|
+| Validation loss | 0.1488551 |
+| Sensitivity | 0.6900 |
+| Specificity | 0.9850 |
+| Precision | 0.8519 |
+| F1-score | 0.7624 |
+| ROC-AUC | 0.95393 |
+| Average precision | 0.84175 |
+| True negatives | 1,576 |
+| False positives | 24 |
+| False negatives | 62 |
+| True positives | 138 |
 
-# \### Interpretation
+## Interpretation
 
-#
+The targeted exclusion experiment produced a different balance of sensitivity, specificity, precision, and F1-score compared with the other experiments.
 
-# The model has a strong preliminary ROC-AUC, but at threshold 0.50 it misses approximately half of the TB-labelled validation cases.
+It achieved higher specificity and precision than the exact-duplicate-aware experiment, while sensitivity was lower.
 
-#
+Only two identified training images were excluded. This experiment does not demonstrate that all near-duplicate images have been identified or that patient-level leakage has been eliminated.
 
-# The threshold sweep illustrates the trade-off between sensitivity and specificity.
+The results should be treated as exploratory and should not be interpreted as proof that near-duplicate exclusion improves generalization.
 
-#
+## Artifacts
 
-# Threshold 0.20 is not declared a clinical operating threshold. It was selected using the current validation set, so reporting the same validation results as an unbiased final estimate would be inappropriate.
+- `data/interim/tbx11k_manifest_near_duplicate_excluded.csv`
+- `results/data_audit/near_duplicate_excluded_manifest_report.json`
+- `results/near_duplicate_excluded_metrics.json`
+- `results/near_duplicate_excluded_metrics.csv`
 
-#
+---
 
-# The output scores have not yet been calibrated.
+# EXP-005: Multi-Seed Evaluation
 
-#
+**Status:** Completed; preliminary
 
-# \### Artifacts
+**Purpose:** Examine variation in model performance across different random seeds.
 
-#
+**Dataset:** Exact-duplicate-aware TBX11K manifest.
 
-# \- `models/checkpoints/densenet121\_baseline.pt` — local checkpoint; do not commit.
+**Training examples:** 6,480
 
-# \- `results/baseline\_metrics.json`
+**Validation examples:** 1,800
 
-# \- `results/baseline\_metrics.csv`
+## Configuration
 
-# \- `results/tables/baseline\_validation\_predictions.csv`
+| Parameter | Value |
+|---|---|
+| Architecture | DenseNet-121 |
+| Pretrained weights | ImageNet |
+| Backbone | Frozen |
+| Training manifest | Exact-duplicate-aware manifest |
+| Seeds | 42, 123, 2026 |
+| Epochs per seed | 1 |
+| Batch size | 4 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+| Input size | 224 × 224 |
+| Threshold | 0.50 |
+| Device | CPU |
 
-# \- `results/tables/baseline\_threshold\_analysis.csv`
+## Per-Seed Results
 
-# \- `results/figures/baseline\_threshold\_analysis.png`
+| Metric | Seed 42 | Seed 123 | Seed 2026 |
+|---|---:|---:|---:|
+| Sensitivity | 0.7800 | 0.8400 | 0.7400 |
+| Specificity | 0.9544 | 0.9331 | 0.9769 |
+| Precision | 0.6812 | 0.6109 | 0.8000 |
+| F1-score | 0.7273 | 0.7074 | 0.7688 |
+| ROC-AUC | 0.96397 | 0.95930 | 0.96117 |
+| Average precision | 0.85047 | 0.84513 | 0.85644 |
 
-#
+## Mean and Standard Deviation
 
-# \### Limitations
+| Metric | Mean | Standard Deviation |
+|---|---:|---:|
+| Sensitivity | 0.7867 | 0.0503 |
+| Specificity | 0.9548 | 0.0219 |
+| Precision | 0.6974 | 0.0956 |
+| F1-score | 0.7345 | 0.0314 |
+| ROC-AUC | 0.9615 | 0.0023 |
+| Average precision | 0.8507 | 0.0057 |
 
-#
+The standard deviations are calculated across the three seed-level results.
 
-# 1\. Single epoch.
+## Interpretation
 
-# 2\. Single seed.
+ROC-AUC and average precision show relatively small variation across the three runs.
 
-# 3\. Frozen backbone.
+Threshold-dependent metrics, particularly precision, show greater variation.
 
-# 4\. No independent final test evaluation.
+The results provide a preliminary indication of seed sensitivity. Three seeds and one training epoch per seed are insufficient to establish robust generalization or convergence.
 
-# 5\. Patient-level and content-level leakage checks are incomplete.
+## Artifacts
 
-# 6\. Probability calibration has not been assessed.
+- `results/multiseed/per_seed_metrics.csv`
+- `results/multiseed/`
+- Individual seed metric JSON files and experiment outputs.
 
-# 7\. Grad-CAM and spatial-consistency experiments are pending.
+---
 
-#
+# EXP-006: Grad-CAM Explainability
 
-# \---
+**Status:** Completed; exploratory
 
-#
+**Purpose:** Generate visual explanations for the DenseNet-121 classifier using Gradient-weighted Class Activation Mapping (Grad-CAM).
 
-# \## Next Experiment
+## Method
 
-#
+Grad-CAM was applied to the trained DenseNet-121 model to obtain class-specific activation heatmaps.
 
-# \*\*EXP-002: Grad-CAM Explanation Generation\*\*
+The analysis focused on the TB-labelled output class.
 
-#
+The generated heatmaps were intended to provide a visual indication of image regions influencing the model's class score.
 
-# Planned objectives:
+The analysis included validation images with available bounding-box annotations.
 
-#
+## Explanation Scope
 
-# 1\. Load the saved DenseNet-121 checkpoint.
+- Grad-CAM heatmaps were generated for the TB-labelled class.
+- The heatmaps were normalized for visualization and subsequent spatial analysis.
+- The explanation output was compared with available dataset bounding-box annotations.
+- Heatmaps were generated for the selected validation images, including cases where the model did not necessarily predict the TB class.
 
-# 2\. Generate Grad-CAM heatmaps for selected validation images.
+## Interpretation
 
-# 3\. Overlay heatmaps on the original chest X-rays.
+Grad-CAM provides a post-hoc visualization of model activation patterns.
 
-# 4\. Verify that heatmaps have valid dimensions and finite values.
+A heatmap should not be interpreted as a confirmed tuberculosis lesion segmentation, a clinical localization result, or proof that the model relies on medically meaningful features.
 
-# 5\. Compare examples across true positives, false positives, true negatives, and false negatives.
+The quality and reliability of the explanations require separate evaluation.
 
-# 6\. Save reproducible visual outputs without committing large datasets or checkpoints.
+## Limitations
 
-#
+1. Grad-CAM is a post-hoc explanation technique.
+2. Bounding boxes are coarse annotations and are not pixel-level lesion masks.
+3. Visual overlap does not establish causal faithfulness.
+4. A visually plausible heatmap does not establish clinical correctness.
 
-# Following qualitative verification, implement a predefined box-based spatial-consistency metric for images with localization annotations.
+---
 
-#
+# EXP-007: Grad-CAM Spatial Consistency Evaluation
 
-# The metric must be described as spatial consistency with coarse localization annotations, not proof of clinical correctness.
+**Status:** Completed; exploratory
+
+**Purpose:** Quantitatively examine the spatial relationship between Grad-CAM activation regions and available validation bounding boxes.
+
+## Evaluation Dataset
+
+| Description | Count |
+|---|---:|
+| Validation images with boxes | 200 |
+| Total bounding boxes | 309 |
+| ActiveTuberculosis boxes | 248 |
+| ObsoletePulmonaryTuberculosis boxes | 61 |
+
+The spatial evaluation used the original `tbx11k_manifest.csv` and the baseline checkpoint.
+
+This is an important provenance distinction: this experiment is not the same training configuration as the multiseed experiments, which used the exact-duplicate-aware manifest.
+
+## Method
+
+1. Select TB-labelled validation images with available bounding-box annotations.
+2. Generate Grad-CAM heatmaps for the TB-labelled output class.
+3. Resize and normalize the heatmaps for spatial comparison.
+4. Scale the annotation coordinates to the 224 × 224 model input dimensions.
+5. Threshold the normalized heatmap at selected values.
+6. Compare the activated regions with the union of the available bounding boxes.
+
+The x and y coordinates were scaled independently to match the resized image dimensions.
+
+## Evaluation Metrics
+
+**Union box coverage**
+
+Measures the proportion of annotated bounding-box area covered by the thresholded heatmap.
+
+**Heatmap precision**
+
+Measures the proportion of highlighted heatmap pixels that fall inside the annotated bounding-box union.
+
+These are spatial overlap measurements, not clinical diagnostic metrics.
+
+## Results at Heatmap Threshold 0.50
+
+| Metric | Mean | Median |
+|---|---:|---:|
+| Union box coverage | 20.21% | 6.94% |
+| Heatmap precision | 9.88% | 2.62% |
+| Mean individual box coverage | 19.78% | 6.74% |
+
+## Threshold Sensitivity Analysis
+
+| Heatmap Threshold | Mean Union Box Coverage | Median Union Box Coverage | Mean Heatmap Precision |
+|---|---:|---:|---:|
+| 0.25 | 46.14% | 49.91% | 10.57% |
+| 0.50 | 20.21% | 6.94% | 9.88% |
+| 0.75 | 5.36% | 0.00% | 9.80% |
+
+No empty heatmaps were reported at the evaluated thresholds.
+
+## Interpretation
+
+The overlap results indicate that the spatial relationship between Grad-CAM activation regions and annotated bounding boxes depends strongly on the heatmap threshold.
+
+At threshold 0.50, mean union box coverage was approximately 20.21%, while mean heatmap precision was approximately 9.88%.
+
+The relatively low median values indicate that the mean results should not be interpreted as consistent localization performance across all images.
+
+Grad-CAM spatial overlap is an exploratory explainability measurement. It does not establish that the model has learned the correct pathology or that its predictions are clinically interpretable.
+
+## Limitations
+
+1. Bounding boxes are coarse annotations.
+2. Bounding boxes do not provide exact lesion boundaries.
+3. Spatial overlap depends on the selected heatmap threshold.
+4. Grad-CAM activation does not establish causal faithfulness.
+5. Patient-level independence has not been established.
+
+---
+
+# EXP-008: Confidence and Localization Association
+
+**Status:** Completed; exploratory
+
+**Purpose:** Examine whether model confidence is associated with Grad-CAM spatial overlap with available bounding-box annotations.
+
+## Evaluation Setup
+
+- Number of validation images: 200.
+- Spatial measurements: box coverage and heatmap precision.
+- Association method: Spearman rank correlation.
+- Bootstrap repetitions: 5,000.
+- Bootstrap random seed: 42.
+
+## Results
+
+| Spatial Metric | Spearman Correlation | 95% Bootstrap Interval |
+|---|---:|---:|
+| Union box coverage | 0.3014 | [0.1739, 0.4219] |
+| Heatmap precision | 0.1712 | [0.0372, 0.2996] |
+| Mean individual box coverage | 0.2912 | [0.1682, 0.4081] |
+
+## Interpretation
+
+The observed Spearman correlations are positive, indicating a positive association between model confidence and the evaluated spatial measurements in this validation sample.
+
+The association is stronger for union box coverage and mean individual box coverage than for heatmap precision.
+
+These findings are exploratory. They do not demonstrate causality, incremental predictive value, or clinical validity.
+
+The bootstrap analysis assumes that the sampled observations are suitable independent sampling units. Patient-level independence has not been established, so the intervals should be interpreted cautiously.
+
+## Limitations
+
+1. The analysis uses 200 annotated validation images.
+2. The results are based on one model checkpoint and one evaluation configuration.
+3. Correlation does not establish causation.
+4. Spatial overlap does not establish explanation faithfulness.
+5. Patient-level independence is unknown.
+
+---
+
+# EXP-009: Software Testing and Demonstration
+
+**Status:** Completed
+
+**Purpose:** Verify the implemented project components and demonstrate the model workflow through the project interface.
+
+## Automated Testing
+
+The project test suite was executed using:
+
+```cmd
+set PYTHONPATH=src
+.venv_test\Scripts\python.exe -m pytest -q
+```
+
+## Test Results
+
+| Item | Result |
+|---|---|
+| Test framework | pytest |
+| Tests passed | 13 |
+| Tests failed | 0 |
+| Execution time | 5.78 seconds |
+| Overall result | Passed |
+
+The reported test run completed with all 13 tests passing.
+
+## Demonstration Interface
+
+A Streamlit-based demonstration interface was run successfully.
+
+The demonstration provides an interface for interacting with the implemented image-classification workflow.
+
+The demonstration is intended for research and educational purposes. It is not a clinical diagnostic application.
+
+## Interpretation
+
+The successful test run provides evidence that the tested software components behaved as expected under the available test cases.
+
+It does not establish model correctness, diagnostic accuracy in clinical practice, or suitability for deployment in a healthcare environment.
+
+---
+
+# Overall Experimental Summary
+
+## Main Experimental Results
+
+| Experiment | Sensitivity | Specificity | Precision | F1-score | ROC-AUC | Average Precision |
+|---|---:|---:|---:|---:|---:|---:|
+| Original baseline | 0.4950 | 0.9975 | 0.9612 | 0.6535 | 0.95985 | 0.83716 |
+| Exact-duplicate-aware | 0.7200 | 0.9775 | 0.8000 | 0.7579 | 0.95444 | 0.84338 |
+| Near-duplicate-excluded | 0.6900 | 0.9850 | 0.8519 | 0.7624 | 0.95393 | 0.84175 |
+
+All three rows use threshold 0.50. They represent separate experiments, not independent test-set evaluations.
+
+## Multi-Seed Summary
+
+Across seeds 42, 123, and 2026, the exact-duplicate-aware configuration produced:
+
+- Mean sensitivity: 78.67%.
+- Mean specificity: 95.48%.
+- Mean precision: 69.74%.
+- Mean F1-score: 0.7345.
+- Mean ROC-AUC: 0.9615.
+- Mean average precision: 0.8507.
+
+These results demonstrate variation across the three runs and should be interpreted as preliminary.
+
+## Explainability Summary
+
+The project implemented Grad-CAM visualization and quantitative spatial comparison against available bounding-box annotations.
+
+At heatmap threshold 0.50:
+
+- Mean union box coverage: 20.21%.
+- Median union box coverage: 6.94%.
+- Mean heatmap precision: 9.88%.
+- Median heatmap precision: 2.62%.
+
+The confidence-association analysis found positive Spearman correlations for the evaluated spatial metrics.
+
+These measurements provide exploratory evidence about the relationship between model activations and available annotations. They do not establish clinically reliable localization or explanation faithfulness.
+
+## Software Verification Summary
+
+- Automated test suite: 13 tests passed.
+- Streamlit demonstration interface: run successfully.
+- Experimental metrics and audit outputs: recorded in the project results directory.
+
+---
+
+# Research Limitations
+
+The following limitations apply to the current experimental work.
+
+1. **Limited training duration:** The reported model experiments used one epoch. The results do not establish convergence or optimal model performance.
+
+2. **Limited seed count:** The multiseed evaluation includes only three seeds.
+
+3. **Frozen feature extractor:** The DenseNet-121 backbone remained frozen in the reported experiments.
+
+4. **No independent final test evaluation:** The reported classification results are validation results. The downloaded test-set discrepancy remains unresolved.
+
+5. **Repeated validation use:** The validation set was used for multiple experiments and threshold analysis. This can introduce selection optimism.
+
+6. **Patient-level independence:** Patient-level grouping and independence have not been established.
+
+7. **Incomplete near-duplicate assessment:** Exact SHA-256 duplicate removal and targeted exclusion of two probable near-duplicates do not prove that all related images have been identified.
+
+8. **Class imbalance:** The dataset contains substantially more non-TB-labelled images than TB-labelled images.
+
+9. **Probability calibration:** Model probability calibration has not been established.
+
+10. **Coarse localization annotations:** Bounding boxes are not pixel-level segmentation masks.
+
+11. **Explainability limitations:** Grad-CAM visualizations and spatial overlap measurements do not prove causal faithfulness or clinical correctness.
+
+12. **Dataset scope:** The experiments use the available TBX11K dataset and do not establish performance across independent hospitals, populations, imaging equipment, or clinical settings.
+
+13. **Clinical validation:** The system has not undergone prospective clinical evaluation or clinical validation.
+
+14. **Deployment readiness:** The demonstration interface is a research prototype and must not be treated as a medical diagnostic product.
+
+---
+
+# Final Research Status
+
+TB-Sentry has progressed from dataset preparation and baseline classification to duplicate-aware experimentation, multiseed evaluation, Grad-CAM visualization, spatial consistency analysis, confidence-association analysis, and software testing.
+
+The experimental work demonstrates a functioning research pipeline for binary TB-labelled chest X-ray classification and exploratory explainability analysis.
+
+The results provide preliminary evidence of classification performance and measurable relationships between model activation maps and available localization annotations.
+
+However, the current evidence does not establish clinical diagnostic performance, reliable lesion localization, patient-level generalization, or clinical deployment readiness.
+
+**Overall status:** Research prototype implemented and experimentally evaluated, with limitations documented. Further training, independent testing, patient-level validation, and clinical evaluation would be required before making stronger claims.
