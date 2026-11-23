@@ -5,6 +5,7 @@ Academic research prototype only.
 Not intended for clinical diagnosis or medical decision-making.
 """
 
+from tb_sentry.trust import analyze_heatmap, calculate_trust
 from pathlib import Path
 
 import matplotlib
@@ -415,6 +416,16 @@ if uploaded_file is not None:
                     target_class=predicted_class,
                 )
 
+                # Trust Layer: experimental inference-time reliability assessment
+                heatmap_analysis = analyze_heatmap(heatmap)
+
+                trust_result = calculate_trust(
+                    confidence=confidence,
+                    concentration_score=heatmap_analysis["concentration_score"],
+                    normalized_entropy=heatmap_analysis["normalized_entropy"],
+                    activated_area_ratio=heatmap_analysis["activated_area_ratio"],
+                )
+
             st.success("Analysis completed.")
 
             st.subheader("Model Prediction")
@@ -436,6 +447,60 @@ if uploaded_file is not None:
             st.caption(
                 "The displayed score is the model's softmax output, "
                 "not a clinically validated probability of disease."
+            )
+
+            # =========================
+            # TB-SENTRY TRUST LAYER
+            # =========================
+
+            st.subheader("🛡️ TB-Sentry Trust Layer")
+
+            trust_col1, trust_col2 = st.columns(2)
+
+            with trust_col1:
+                st.metric(
+                    "Experimental Trust Score",
+                    f"{trust_result['trust_score']}/100"
+                )
+
+            with trust_col2:
+                st.metric(
+                    "Trust Category",
+                    trust_result["trust_category"]
+                )
+
+            if trust_result["review_required"]:
+                st.warning("⚠️ Human review recommended for this prediction.")
+            else:
+                st.success("No predefined heuristic review triggers were activated.")
+
+            st.markdown("### Trust Assessment Components")
+
+            components = trust_result["components"]
+
+            st.progress(components["confidence"])
+            st.caption(f"Model confidence: {components['confidence']:.2%}")
+
+            st.progress(components["concentration_score"])
+            st.caption(f"Heatmap concentration: {components['concentration_score']:.2%}")
+
+            st.progress(1.0 - components["normalized_entropy"])
+            st.caption(f"Heatmap distribution score: {(1.0 - components['normalized_entropy']):.2%}")
+
+            st.caption(
+                f"Activated area ratio: {components['activated_area_ratio']:.2%}"
+            )
+
+            st.markdown("### Assessment Notes")
+
+            for reason in trust_result["reasons"]:
+                st.write(f"• {reason}")
+
+            st.info(
+                "This Trust Layer is an experimental heuristic combining model confidence "
+                "and Grad-CAM activation distribution. It is not clinically validated and "
+                "does not establish diagnostic correctness, lesion localization accuracy, "
+                "or disease probability."
             )
 
             st.subheader("Class Scores")

@@ -1,0 +1,48 @@
+TB-SENTRY FINE-TUNED LOCALIZATION EVALUATION
+======================================================================
+Images successfully analyzed: 200
+Model: Fine-tuned DenseNet-121 (Epoch 1)
+Interpolation: Floating-point bilinear
+Thresholds: 0.25, 0.50, 0.75
+
+AVERAGE METRICS
+----------------------------------------------------------------------
+image_width: 512.000000
+image_height: 512.000000
+num_boxes: 1.545000
+mean_inside: 0.464392
+mean_outside: 0.327567
+max_inside: 0.798100
+max_outside: 0.987294
+activation_fraction_inside: 0.128508
+bbox_area_pixels: 25291.660000
+precision_025: 0.129890
+coverage_025: 0.770779
+area_fraction_025: 0.565574
+precision_05: 0.162368
+coverage_05: 0.430916
+area_fraction_05: 0.245655
+precision_075: 0.184604
+coverage_075: 0.163515
+area_fraction_075: 0.087667
+
+MEDIAN METRICS
+----------------------------------------------------------------------
+image_width: 512.000000
+image_height: 512.000000
+num_boxes: 2.000000
+mean_inside: 0.457370
+mean_outside: 0.326335
+max_inside: 0.946559
+max_outside: 0.999651
+activation_fraction_inside: 0.100408
+bbox_area_pixels: 19507.000000
+precision_025: 0.100993
+coverage_025: 0.973509
+area_fraction_025: 0.588917
+precision_05: 0.128556
+coverage_05: 0.366339
+area_fraction_05: 0.227852
+precision_075: 0.097521
+coverage_075: 0.080404
+area_fraction_075: 0.073799

@@ -272,3 +272,15 @@ results/generated/
 
 # Additional local Python environment
 .venv_test/
+
+# TB-Sentry experiment checkpoints
+experiments/*/*.pt
+
+# Generated visualization outputs (keep source summaries instead)
+results/false_negative_inspection/**/*.png
+results/figures/**/*.png
+results/data_audit/*.png
+results/spatial_consistency/figures/*.png
+
+# Python bytecode
+__pycache__/

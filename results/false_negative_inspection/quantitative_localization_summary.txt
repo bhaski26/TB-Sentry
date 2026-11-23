@@ -1,0 +1,74 @@
+TB-SENTRY FALSE NEGATIVE LOCALIZATION ANALYSIS
+======================================================================
+Images analyzed: 5
+Interpolation: Floating-point bilinear
+Quantization before interpolation: None
+
+AVERAGE METRICS
+----------------------------------------------------------------------
+tb_probability: 0.009866
+image_width: 512.000000
+image_height: 512.000000
+mean_inside: 0.005485
+mean_outside: 0.071818
+max_inside: 0.041062
+max_outside: 0.999771
+activation_fraction_inside: 0.002016
+bbox_area_pixels: 10962.600000
+precision_025: 0.000000
+coverage_025: 0.000000
+area_fraction_025: 0.101503
+precision_05: 0.000000
+coverage_05: 0.000000
+area_fraction_05: 0.063309
+precision_075: 0.000000
+coverage_075: 0.000000
+area_fraction_075: 0.023454
+
+PER-IMAGE RESULTS
+----------------------------------------------------------------------
+
+tb0326.png
+TB probability: 0.004279
+Mean inside: 0.000000
+Mean outside: 0.039812
+Activation fraction inside: 0.000000
+Threshold 0.25: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.055641
+Threshold 0.5: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.034863
+Threshold 0.75: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.019489
+
+tb0575.png
+TB probability: 0.005102
+Mean inside: 0.000000
+Mean outside: 0.073435
+Activation fraction inside: 0.000000
+Threshold 0.25: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.091480
+Threshold 0.5: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.064209
+Threshold 0.75: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.039230
+
+tb0015.png
+TB probability: 0.010930
+Mean inside: 0.000000
+Mean outside: 0.035439
+Activation fraction inside: 0.000000
+Threshold 0.25: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.051598
+Threshold 0.5: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.029354
+Threshold 0.75: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.010933
+
+tb0231.png
+TB probability: 0.012297
+Mean inside: 0.011006
+Mean outside: 0.035308
+Activation fraction inside: 0.001633
+Threshold 0.25: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.051414
+Threshold 0.5: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.028976
+Threshold 0.75: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.010933
+
+tb0456.png
+TB probability: 0.016723
+Mean inside: 0.016417
+Mean outside: 0.175095
+Activation fraction inside: 0.008449
+Threshold 0.25: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.257381
+Threshold 0.5: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.159142
+Threshold 0.75: Precision=0.000000, Coverage=0.000000, ActivatedArea=0.036682
