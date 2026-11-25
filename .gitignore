@@ -239,6 +239,9 @@ data/interim/
 *.onnx
 *.safetensors
 
+# Allow the baseline model required for Streamlit deployment
+!models/checkpoints/densenet121_baseline.pt
+
 # Experiment tracking
 wandb/
 mlruns/
